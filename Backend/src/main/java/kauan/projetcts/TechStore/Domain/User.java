@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
-
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -48,8 +47,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Cargo cargo;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Produto> ProdutosNoCarrinho = new ArrayList<>();
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Carrinho carrinho;
 
 }

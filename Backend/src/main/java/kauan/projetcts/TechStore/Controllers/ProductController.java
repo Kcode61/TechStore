@@ -1,0 +1,44 @@
+package kauan.projetcts.TechStore.Controllers;
+
+import kauan.projetcts.TechStore.Domain.NovoProdutoDTO;
+import kauan.projetcts.TechStore.Domain.Produto;
+import kauan.projetcts.TechStore.Domain.User;
+import kauan.projetcts.TechStore.Services.ProductService;
+import kauan.projetcts.TechStore.Services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/catalogo")
+public class ProductController {
+    @Autowired
+    private ProductService productService;
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable int id, @RequestBody NovoProdutoDTO novoProdutoDTO) {
+
+        return ResponseEntity.ok(productService.atualizarProdutoDoCatalogo(id, novoProdutoDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletarProdutoDoCatalogo(@PathVariable int id) {
+        productService.removerProdutoDoCatalogo(id);
+        return ResponseEntity.ok("Produto removido com sucesso");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Produto>> listarProdutos() {
+        return ResponseEntity.ok(productService.listarProdutosDoCatalogo());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> buscarProdutoPorId(@PathVariable int id) {
+        return ResponseEntity.ok(productService.buscarProdutoPorId(id));
+    }
+
+}
