@@ -2,7 +2,6 @@ package kauan.projetcts.TechStore.Services;
 
 import kauan.projetcts.TechStore.Domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +13,6 @@ public class CarrinhoService {
     ProdutoRepository produtoRepository;
     @Autowired
     UserRepository userRepository;
-
-    public Carrinho acharCarrinho(User user) {
-        return user.getCarrinho();
-    }
 
     public CarrinhoItem adicionarItemAoCarrinho(int id, User user) {
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
