@@ -1,14 +1,11 @@
 package kauan.projetcts.TechStore.Controllers;
 
 import kauan.projetcts.TechStore.Domain.NovoProdutoDTO;
+import kauan.projetcts.TechStore.Domain.NovoProdutoNoCatalogoDTO;
 import kauan.projetcts.TechStore.Domain.Produto;
-import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Services.ProductService;
-import kauan.projetcts.TechStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +31,11 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Produto>> listarProdutos() {
         return ResponseEntity.ok(productService.listarProdutosDoCatalogo());
+    }
+
+    @PostMapping("/adicionarproduto")
+    ResponseEntity<Produto> adicionarProduto(@RequestBody NovoProdutoNoCatalogoDTO dto) {
+        return ResponseEntity.ok(productService.adicionarProdutoAoCatalogo(dto));
     }
 
     @GetMapping("/{id}")

@@ -32,6 +32,20 @@ public class ProductService {
         return produtoBuscado.get();
     }
 
+    public Produto adicionarProdutoAoCatalogo(NovoProdutoNoCatalogoDTO dto) {
+
+        Produto produtoNovo = new Produto();
+
+        produtoNovo.setProdutoNome(dto.nome());
+        produtoNovo.setProdutoValor(dto.valor());
+        produtoNovo.setProdutoCategoria(dto.produtoCategoria());
+        produtoNovo.setProdutoDescricao(dto.descricao());
+        produtoNovo.setProdutoImage(dto.imagem());
+        produtoNovo.setProdutoReview(dto.review());
+
+        return produtoRepository.save(produtoNovo);
+    }
+
     public Produto atualizarProdutoDoCatalogo(int id, NovoProdutoDTO novoProdutoDTO) {
 
         Produto produtoBuscado = buscarProdutoPorId(id);
