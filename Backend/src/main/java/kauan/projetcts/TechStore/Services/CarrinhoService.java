@@ -14,7 +14,7 @@ public class CarrinhoService {
     @Autowired
     UserRepository userRepository;
 
-    public CarrinhoItem adicionarItemAoCarrinho(int id, User user) {
+    public CarrinhoResponse adicionarItemAoCarrinho(int id, User user) {
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
         if (produtoBuscado.isPresent()) {
@@ -23,7 +23,7 @@ public class CarrinhoService {
                 if (carrinhoItem.getProduto().getId() == produto.getId()) {
                     carrinhoItem.setQuantidade(carrinhoItem.getQuantidade() + 1);
                     userRepository.save(user);
-                    return carrinhoItem;
+                    return new CarrinhoResponse(null, carrinhoItem);
                 }
 
             }
@@ -34,9 +34,9 @@ public class CarrinhoService {
             carrinhoItem.setCarrinho(user.getCarrinho());
             itensDoCarrinho.add(carrinhoItem);
             userRepository.save(user);
-            return carrinhoItem;
+            return new CarrinhoResponse(null, carrinhoItem);
         }
-        return null;
+        return new CarrinhoResponse("Produto não encontrado", null);
     }
 
     public Carrinho listarItensDoCarrinho(User user) {

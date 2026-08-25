@@ -25,7 +25,7 @@ public class CarrinhoController {
     @PostMapping("/{id}")
     public CarrinhoItem adicionarItemAoCarrinho(Authentication authentication, @PathVariable int id) {
         User user = userService.GetUsuarioLogado(authentication);
-        return carrinhoService.adicionarItemAoCarrinho(id, user);
+        return carrinhoService.adicionarItemAoCarrinho(id, user).carrinhoItem();
     }
     @DeleteMapping("/{id}")
     public String removerItemDoCarrinho(Authentication authentication, @PathVariable int id) {
