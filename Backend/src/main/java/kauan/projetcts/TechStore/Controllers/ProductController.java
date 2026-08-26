@@ -38,6 +38,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.adicionarProdutoAoCatalogo(dto));
     }
 
+    @GetMapping("/filtrarprodutos")
+    public ResponseEntity<List<Produto>> filtrarProdutosPorReviews() {
+        return ResponseEntity.ok(productService.filtrarProdutosPorReviews());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Produto> buscarProdutoPorId(@PathVariable int id) {
         return ResponseEntity.ok(productService.buscarProdutoPorId(id));

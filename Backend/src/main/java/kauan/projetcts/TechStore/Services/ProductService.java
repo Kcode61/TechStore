@@ -4,6 +4,8 @@ import kauan.projetcts.TechStore.Domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +47,15 @@ public class ProductService {
 
         return produtoRepository.save(produtoNovo);
     }
+    public List<Produto> filtrarProdutosPorReviews() {
+        List<Produto> catalogo = produtoRepository.findAll();
 
+        return catalogo.stream()
+                .filter(produto -> produto.getReviewsCount() >= 60)
+                .sorted(Comparator.comparing(Produto::getReviewsCount).reversed())
+                .limit(10)
+                .toList();
+    }
     public Produto atualizarProdutoDoCatalogo(int id, NovoProdutoDTO novoProdutoDTO) {
 
         Produto produtoBuscado = buscarProdutoPorId(id);

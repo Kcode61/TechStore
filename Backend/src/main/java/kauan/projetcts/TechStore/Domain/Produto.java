@@ -16,6 +16,7 @@ public class Produto {
     private String produtoDescricao;
     private int produtoValor;
     private double produtoReview;
+    private int reviewsCount;
     private String produtoImage;
     private ProdutoCategoria produtoCategoria;
 
