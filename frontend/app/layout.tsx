@@ -18,7 +18,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col md:flex-row font-inter">
+      <body
+        className="min-h-full flex flex-col  font-inter"
+        cz-shortcut-listen="true"
+      >
         {children}
       </body>
     </html>

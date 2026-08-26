@@ -1,5 +1,11 @@
-import HomeSection from "@/components/HomeSection";
+import { HomeSection } from "@/components/HomeSection";
+import { InfosSection } from "@/components/InfosSection";
 
 export default function Home() {
-  return <HomeSection />;
+  return (
+    <>
+      <HomeSection />
+      <InfosSection />
+    </>
+  );
 }

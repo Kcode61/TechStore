@@ -1,7 +1,7 @@
 import { ArrowUpRight, User2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-export default function HomeSection() {
+export function HomeSection() {
   const ITEMS = [
     "Notebooks",
     "Smartphones",
@@ -15,8 +15,8 @@ export default function HomeSection() {
     "Produtividade",
   ];
   return (
-    <section className="py-32 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section className="pt-32  bg-white">
+      <div className="max-w-[1340px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex flex-col  gap-6">
             <p className="font-mono text-xs mb-4 uppercase tracking-[0.2em] text-[#73839A]">
