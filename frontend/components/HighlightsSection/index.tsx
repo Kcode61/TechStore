@@ -38,7 +38,7 @@ export function HighlightsSection() {
   }
 
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-20">
       <div className="mx-auto max-w-[1340px] px-6">
         <div className="flex items-baseline gap-4 border-b border-[#E5E7EB] pb-6">
           <span className="font-jet text-xs uppercase tracking-[0.2em] text-[#73839A]">

@@ -1,3 +1,5 @@
+import { CtaSection } from "@/components/CtaSection";
+import { Header } from "@/components/Header";
 import { HighlightsSection } from "@/components/HighlightsSection";
 import { HomeSection } from "@/components/HomeSection";
 import { InfosSection } from "@/components/InfosSection";
@@ -5,9 +7,11 @@ import { InfosSection } from "@/components/InfosSection";
 export default function Home() {
   return (
     <>
+      <Header />
       <HomeSection />
       <InfosSection />
       <HighlightsSection />
+      <CtaSection />
     </>
   );
 }
