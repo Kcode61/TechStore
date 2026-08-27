@@ -29,7 +29,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#E5E7EB] bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-4 px-6 py-4">
+      <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-4 py-4">
         <div className="flex items-center gap-12">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#0E1629] font-inter font-bold text-white transition-colors duration-300 group-hover:bg-[#3567F4]">
@@ -49,7 +49,7 @@ export function Header() {
             </Link>
             <Link
               className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A] transition-colors hover:text-[#0F172A]"
-              href="/produtos"
+              href="/Produtos"
             >
               Produtos
             </Link>

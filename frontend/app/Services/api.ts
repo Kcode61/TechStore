@@ -15,7 +15,20 @@ export async function listarProdutos() {
 
   return await response.json();
 }
+export async function listarCatalogo() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo`,
+    {
+      method: "GET",
+    },
+  );
 
+  if (!response.ok) {
+    throw new Error("Erro ao buscar produtos do catálogo");
+  }
+
+  return await response.json();
+}
 export async function adicionarAoCarrinho(
   produtoId: number,
 ): Promise<CarrinhoItem> {

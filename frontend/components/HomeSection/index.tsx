@@ -33,7 +33,7 @@ export function HomeSection() {
             </p>
             <div className="flex mt-2 gap-2 items-center flex-col md:flex-row">
               <Link
-                href="/produtos"
+                href="/Produtos"
                 className="flex gap-2 mb-2 text-white w-fit group font-bold font-inter items-center rounded-full py-3 cursor-pointer px-8 bg-[#0E1629] hover:bg-gradient-to-r from-[#3567F4] to-[#3567F4] transition ease duration-300 "
               >
                 Ver produtos
@@ -70,7 +70,7 @@ export function HomeSection() {
           </div>
           <div className="">
             <Link
-              href="/produtos"
+              href="/Produtos"
               className="group relative block h-full min-h-[340px] overflow-hidden rounded-2xl bg-[#F1F5F9]"
             >
               <Image
