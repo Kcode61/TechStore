@@ -8,25 +8,30 @@ import {
   ShoppingCartIcon,
   User2Icon,
 } from "lucide-react";
+import { usePathname } from "next/dist/client/components/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export function Header() {
   const [usuario, setUsuario] = useState<User | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     async function carregarUsuario() {
       try {
         const data = await buscarUsuarioLogado();
         setUsuario(data);
-      } catch (error) {
-        console.error("Erro ao carregar usuário:", error);
+      } catch {
+        setUsuario(null);
       }
     }
 
     carregarUsuario();
-  }, []);
-
+  }, [pathname]);
+  function handleLogout() {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  }
   return (
     <header className="sticky top-0 z-50 border-b border-[#E5E7EB] bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-4 py-4">
@@ -72,6 +77,7 @@ export function Header() {
             </Link>
             <button
               type="button"
+              onClick={handleLogout}
               className="flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-5 py-2.5 font-inter text-sm font-bold text-[#64748B] transition-all duration-300 hover:border-[#FCA5A5] hover:bg-[#FEF2F2] hover:text-[#DC2626]"
             >
               <LogOut size={16} /> Sair

@@ -15,6 +15,69 @@ export async function listarProdutos() {
 
   return await response.json();
 }
+export async function login(email: string, password: string) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Email ou senha inválidos");
+  }
+
+  const token = await response.text();
+
+  localStorage.setItem("token", token);
+
+  return token;
+}
+
+export async function register(
+  name: string,
+  email: string,
+  password: string,
+  role: string,
+) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        role,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      throw new Error("Esse email já está cadastrado");
+    }
+
+    throw new Error("Erro ao criar conta");
+  }
+
+  const token = await response.text();
+
+  localStorage.setItem("token", token);
+
+  return token;
+}
+
 export async function listarCatalogo() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo`,
