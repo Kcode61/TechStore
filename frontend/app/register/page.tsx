@@ -2,6 +2,7 @@
 import { LockKeyhole, Mail, User } from "lucide-react";
 import { useState } from "react";
 import { register } from "../Services/api";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const router = useRouter();
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
 
@@ -19,12 +20,15 @@ export default function Register() {
 
       await register(name, email, password, "USER");
 
-      window.location.href = "/";
+      router.push("/");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Erro ao criar conta");
     } finally {
       setLoading(false);
     }
+  }
+  if (localStorage.getItem("token")) {
+    router.push("/");
   }
   return (
     <section className="bg-white py-16">

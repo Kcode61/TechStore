@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { LogIn, Mail, LockKeyhole } from "lucide-react";
 import { login } from "../Services/api";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
@@ -17,12 +19,15 @@ export default function Login() {
 
       await login(email, password);
 
-      window.location.href = "/";
+      router.push("/");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Erro ao fazer login");
     } finally {
       setLoading(false);
     }
+  }
+  if (localStorage.getItem("token")) {
+    router.push("/");
   }
   return (
     <section className="bg-white py-16">

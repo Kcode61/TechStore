@@ -1,15 +1,28 @@
 "use client";
-import { adicionarAoCarrinho } from "@/app/Services/api";
+import { adicionarAoCarrinho, buscarUsuarioLogado } from "@/app/Services/api";
 import { Produto } from "@/app/types/produto";
+import { User } from "@/app/types/user";
 import { Check, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
+const [usuario, setUsuario] = useState<User | null>(null);
 export function ProductCard({ product }: { product: Produto }) {
+  useEffect(() => {
+    async function carregarUsuario() {
+      try {
+        const data = await buscarUsuarioLogado();
+        setUsuario(data);
+      } catch {
+        setUsuario(null);
+      }
+    }
+
+    carregarUsuario();
+  }, []);
   async function handleAdicionarCarrinho(produtoId: number) {
     try {
       const item = await adicionarAoCarrinho(produtoId);
@@ -37,11 +50,16 @@ export function ProductCard({ product }: { product: Produto }) {
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <button
+          disabled={!usuario}
           onClick={() => handleAdicionarCarrinho(product.id)}
           className="absolute bottom-0 left-0 right-0 flex translate-y-full items-center justify-center gap-2 bg-[#2D5BFF] py-3 text-sm font-semibold text-white transition-transform duration-300 group-hover:translate-y-0"
         >
           {added ? <Check size={16} /> : <ShoppingCart size={16} />}
-          {added ? "Adicionado!" : "Adicionar"}
+          {!usuario
+            ? "Faça login para adicionar"
+            : added
+              ? "Adicionado!"
+              : "Adicionar ao carrinho"}
         </button>
       </div>
 
