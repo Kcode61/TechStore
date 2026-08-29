@@ -42,7 +42,7 @@ export function HighlightsSection() {
           </div>
 
           <Link
-            href="/Produtos"
+            href="/produtos"
             className="group flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] text-[#73839A] transition-colors hover:text-[#3567F4]"
           >
             Ver todos

@@ -3,7 +3,7 @@ package kauan.projetcts.TechStore.Domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class Carrinho {
             orphanRemoval = true
     )
     @JsonIgnore
-    private List<CarrinhoItem> carrinhoItemList;
+    private List<CarrinhoItem> carrinhoItemList = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore

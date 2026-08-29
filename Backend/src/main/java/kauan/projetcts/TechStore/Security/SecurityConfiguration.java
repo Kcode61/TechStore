@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import kauan.projetcts.TechStore.Domain.Carrinho;
 import java.util.List;
 
 @Configuration
@@ -80,19 +80,33 @@ public class SecurityConfiguration {
 
     @Bean
     CommandLineRunner init(UserRepository userRepository, PasswordEncoder encoder) {
-        return args -> {
-            if (userRepository.findByEmail("admin@email.com") == null) {
-                User user = new User();
-                user.setNome("Admin");
-                user.setEmail("admin@email.com");
-                user.setPassword(encoder.encode("123456"));
-                user.setCargo(Cargo.ADMIN);
 
-                userRepository.save(user);
-            }
-        };
-    }
+    return args -> {
 
+        User user = userRepository.findByEmail("admin@email.com");
+
+        if (user == null) {
+
+            user = new User();
+
+            user.setNome("Admin");
+            user.setEmail("admin@email.com");
+            user.setPassword(encoder.encode("123456"));
+            user.setCargo(Cargo.ADMIN);
+
+        }
+
+        if (user.getCarrinho() == null) {
+
+            Carrinho carrinho = new Carrinho();
+
+            carrinho.setUser(user);
+            user.setCarrinho(carrinho);
+        }
+
+        userRepository.save(user);
+    };
+}
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

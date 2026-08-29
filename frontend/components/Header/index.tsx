@@ -54,7 +54,7 @@ export function Header() {
             </Link>
             <Link
               className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A] transition-colors hover:text-[#0F172A]"
-              href="/Produtos"
+              href="/produtos"
             >
               Produtos
             </Link>

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import kauan.projetcts.TechStore.Domain.Carrinho;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -46,12 +46,29 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/register")
+   @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
-        if (this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
-        String encryptedPassword = passwordEncoder.encode(data.password());
-        User newUser = new User(data.email(), encryptedPassword, data.role(), data.name());
-        this.userRepository.save(newUser);
-        return ResponseEntity.ok().build();
+
+    if (this.userRepository.findByEmail(data.email()) != null) {
+        return ResponseEntity.badRequest().build();
     }
+
+    String encryptedPassword = passwordEncoder.encode(data.password());
+
+    User newUser = new User(
+            data.email(),
+            encryptedPassword,
+            data.role(),
+            data.name()
+    );
+
+    Carrinho carrinho = new Carrinho();
+
+    carrinho.setUser(newUser);
+    newUser.setCarrinho(carrinho);
+
+    this.userRepository.save(newUser);
+
+    return ResponseEntity.ok().build();
+}
 }

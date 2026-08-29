@@ -1,3 +1,4 @@
+import { Carrinho } from "../types/carrinho";
 import { CarrinhoItem } from "../types/carrinhoitem";
 import { User } from "../types/user";
 
@@ -77,7 +78,54 @@ export async function register(
 
   return token;
 }
+export async function listarCarrinho(): Promise<Carrinho> {
+  const token = localStorage.getItem("token");
 
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar carrinho");
+  }
+
+  return response.json();
+}
+export async function removerDoCarrinho(produtoId: number): Promise<string> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/${produtoId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao remover produto do carrinho");
+  }
+
+  return response.text();
+}
 export async function listarCatalogo() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo`,

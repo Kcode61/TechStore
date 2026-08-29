@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  LogOut,
-  User2Icon,
-  Mail,
-  ShieldCheck,
-  ChevronRight,
-} from "lucide-react";
+import { LogOut, User2Icon, Mail, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buscarUsuarioLogado } from "../Services/api";
 import { User } from "../types/user";
