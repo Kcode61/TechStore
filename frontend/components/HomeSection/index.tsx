@@ -1,6 +1,11 @@
+"use client";
+import { buscarUsuarioLogado } from "@/app/Services/api";
+import { User } from "@/app/types/user";
 import { ArrowUpRight, User2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 export function HomeSection() {
   const ITEMS = [
     "Notebooks",
@@ -14,6 +19,30 @@ export function HomeSection() {
     "Setup",
     "Produtividade",
   ];
+  const [usuario, setUsuario] = useState<User | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function carregarUsuario() {
+      try {
+        const data = await buscarUsuarioLogado();
+        setUsuario(data);
+      } catch {
+        setUsuario(null);
+      }
+    }
+
+    carregarUsuario();
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/login");
+    }
+  }, [router]);
+
   return (
     <section className="pt-32  bg-white">
       <div className="max-w-[1340px] mx-auto">
@@ -42,16 +71,30 @@ export function HomeSection() {
                   className="transition-all ease duration-200 group-hover:-translate-y-1 group-hover:translate-1"
                 />
               </Link>
-              <Link
-                href="/register"
-                className="flex gap-2 mb-2 text-[#6b7c94] w-fit hover:text-white group font-bold font-inter items-center rounded-full py-3 cursor-pointer px-8 border border-[#E5E7EB] hover:border-[#0E1629]   hover:bg-[#0E1629] bg-white transition ease duration-300 "
-              >
-                Criar conta
-                <User2Icon
-                  size={17}
-                  className="transition-all ease duration-200 group-hover:-translate-y-1 "
-                />
-              </Link>
+
+              {usuario ? (
+                <Link
+                  href="/perfil"
+                  className="group mb-2 flex w-fit items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-6 py-3 font-inter text-sm font-bold text-[#6B7C94] shadow-sm transition-all duration-300 hover:border-[#0E1629] hover:bg-[#0E1629] hover:text-white hover:shadow-md"
+                >
+                  Ver perfil
+                  <User2Icon
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              ) : (
+                <Link
+                  href="/register"
+                  className="group mb-2 flex w-fit items-center gap-2 rounded-full bg-[#0E1629] px-6 py-3 font-inter text-sm font-bold text-white shadow-sm transition-all duration-300 hover:bg-[#1A2742] hover:shadow-md"
+                >
+                  Criar conta
+                  <User2Icon
+                    size={17}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              )}
             </div>
             <div className="flex gap-4 mt-4 items-center">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A]">

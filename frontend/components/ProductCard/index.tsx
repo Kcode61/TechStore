@@ -7,10 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const formatCurrency = (value: number) =>
-  value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-const [usuario, setUsuario] = useState<User | null>(null);
 export function ProductCard({ product }: { product: Produto }) {
+  const formatCurrency = (value: number) =>
+    value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const [usuario, setUsuario] = useState<User | null>(null);
   useEffect(() => {
     async function carregarUsuario() {
       try {

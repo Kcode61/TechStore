@@ -1,6 +1,6 @@
 "use client";
 import { LockKeyhole, Mail, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { register } from "../Services/api";
 import { useRouter } from "next/navigation";
 
@@ -27,9 +27,14 @@ export default function Register() {
       setLoading(false);
     }
   }
-  if (localStorage.getItem("token")) {
-    router.push("/");
-  }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      router.push("/");
+    }
+  }, [router]);
+
   return (
     <section className="bg-white py-16">
       <div className="mx-auto max-w-[1340px] px-6">
