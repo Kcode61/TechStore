@@ -1,16 +1,29 @@
 "use client";
-import { adicionarAoCarrinho, buscarUsuarioLogado } from "@/app/Services/api";
+import {
+  adicionarAoCarrinho,
+  buscarUsuarioLogado,
+  excluirProduto,
+} from "@/app/Services/api";
 import { Produto } from "@/app/types/produto";
 import { User } from "@/app/types/user";
-import { Check, ShoppingCart, Star } from "lucide-react";
+import { Check, ShoppingCart, Star, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 
-export function ProductCard({ product }: { product: Produto }) {
+export function ProductCard({
+  product,
+  onDelete,
+}: {
+  product: Produto;
+  onDelete?: (productId: number) => void;
+}) {
   const formatCurrency = (value: number) =>
     value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   const [usuario, setUsuario] = useState<User | null>(null);
+  const [added, setAdded] = useState(false);
+  const isAdmin = usuario?.cargo === "ADMIN";
+
   useEffect(() => {
     async function carregarUsuario() {
       try {
@@ -23,6 +36,26 @@ export function ProductCard({ product }: { product: Produto }) {
 
     carregarUsuario();
   }, []);
+
+  async function handleDeletarProduto(
+    event: MouseEvent<HTMLButtonElement>,
+    produtoId: number,
+  ) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!isAdmin || !onDelete) {
+      return;
+    }
+
+    try {
+      await excluirProduto(produtoId);
+      onDelete(produtoId);
+    } catch (error) {
+      console.error("Erro ao excluir produto:", error);
+    }
+  }
+
   async function handleAdicionarCarrinho(produtoId: number) {
     try {
       const item = await adicionarAoCarrinho(produtoId);
@@ -34,7 +67,6 @@ export function ProductCard({ product }: { product: Produto }) {
       console.error("Erro:", error);
     }
   }
-  const [added, setAdded] = useState(false);
 
   return (
     <Link
@@ -42,6 +74,16 @@ export function ProductCard({ product }: { product: Produto }) {
       className="group relative flex flex-col overflow-hidden rounded-xl border border-[#E2E8F0] bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
     >
       <div className="relative aspect-square overflow-hidden bg-[#F1F5F9]">
+        {isAdmin && (
+          <button
+            type="button"
+            aria-label={`Excluir ${product.produtoNome}`}
+            onClick={(event) => handleDeletarProduto(event, product.id)}
+            className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-500 shadow-sm transition hover:scale-105 hover:bg-white"
+          >
+            <Trash2 size={16} />
+          </button>
+        )}
         <Image
           src={product.produtoImage}
           alt={product.produtoNome}

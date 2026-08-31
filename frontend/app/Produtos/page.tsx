@@ -9,6 +9,12 @@ export default function Produtos() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const handleDeleteProduto = (produtoId: number) => {
+    setProdutos((prevProdutos) =>
+      prevProdutos.filter((produto) => produto.id !== produtoId),
+    );
+  };
+
   useEffect(() => {
     async function buscarProdutos() {
       try {
@@ -82,7 +88,11 @@ export default function Produtos() {
         ) : (
           <div className="grid grid-cols-2 gap-4 py-5 md:grid-cols-3 lg:grid-cols-4">
             {produtos.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard
+                key={p.id}
+                product={p}
+                onDelete={handleDeleteProduto}
+              />
             ))}
           </div>
         )}

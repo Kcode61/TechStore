@@ -42,6 +42,30 @@ export async function login(email: string, password: string) {
 
   return token;
 }
+export async function excluirProduto(id: number) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao excluir produto");
+  }
+
+  return await response.text();
+}
 export async function adicionarProduto(
   nome: string,
   descricao: string,

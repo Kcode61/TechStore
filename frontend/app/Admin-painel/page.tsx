@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Produto, ProdutoCategoria } from "../types/produto";
-import { listarCatalogo } from "../Services/api";
+import { buscarUsuarioLogado, listarCatalogo } from "../Services/api";
 import { Check, LucideShoppingBag, Plus, ShoppingCart } from "lucide-react";
 import { adicionarProduto as adicionarProdutoApi } from "../Services/api";
 import { ProductCard } from "@/components/ProductCard";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
+import { User } from "../types/user";
 
 export default function AdminPainel() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -19,7 +22,35 @@ export default function AdminPainel() {
   const [descricao, setDescricao] = useState("");
   const [adicionando, setAdicionando] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const pathname = usePathname();
+  const handleDeleteProduto = (produtoId: number) => {
+    setProdutos((prevProdutos) =>
+      prevProdutos.filter((produto) => produto.id !== produtoId),
+    );
+  };
+  const [usuario, setUsuario] = useState<User | null>(null);
+  const router = useRouter();
 
+  useEffect(() => {
+    async function carregarUsuario() {
+      try {
+        const data = await buscarUsuarioLogado();
+        setUsuario(data);
+      } catch {
+        setUsuario(null);
+      }
+    }
+
+    carregarUsuario();
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push("/login");
+    }
+  }, [router]);
   useEffect(() => {
     async function buscarProdutos() {
       try {
@@ -56,7 +87,9 @@ export default function AdminPainel() {
       setError("Erro ao adicionar produto:" + (error as Error).message);
     }
   }
-
+  if (pathname === "/AdminPainel" && usuario?.cargo !== "ADMIN") {
+    return null;
+  }
   return (
     <section className="min-h-screen bg-white py-16">
       <div className="mx-auto max-w-[1340px] px-6">
@@ -200,11 +233,14 @@ export default function AdminPainel() {
 
               <button
                 type="submit"
-                className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#111426] font-inter text-sm font-bold text-white transition-all duration-300 ease hover:bg-[#1B2038] active:scale-[0.98]"
+                className="mt-2 mb-4 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#111426] font-inter text-sm font-bold text-white transition-all duration-300 ease hover:bg-[#1B2038] active:scale-[0.98]"
               >
                 {adicionando ? <Check size={16} /> : <ShoppingCart size={16} />}
                 {adicionando ? "Adicionado!" : "Adicionar produto"}
               </button>
+              {error && (
+                <p className="text-red-400 font-inter font-medium">{error}</p>
+              )}
             </form>
           </div>
 
@@ -249,7 +285,11 @@ export default function AdminPainel() {
               ) : (
                 <div className="grid grid-cols-2 gap-4 py-5 md:grid-cols-3 lg:grid-cols-4">
                   {produtos.map((p) => (
-                    <ProductCard key={p.id} product={p} />
+                    <ProductCard
+                      key={p.id}
+                      product={p}
+                      onDelete={handleDeleteProduto}
+                    />
                   ))}
                 </div>
               )}
