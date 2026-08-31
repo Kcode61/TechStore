@@ -1,5 +1,6 @@
 import { Carrinho } from "../types/carrinho";
 import { CarrinhoItem } from "../types/carrinhoitem";
+import { ProdutoCategoria } from "../types/produto";
 import { User } from "../types/user";
 
 export async function listarProdutos() {
@@ -41,7 +42,42 @@ export async function login(email: string, password: string) {
 
   return token;
 }
+export async function adicionarProduto(
+  nome: string,
+  descricao: string,
+  valor: number,
+  review: number,
+  imagem: string,
+  produtoCategoria: ProdutoCategoria,
+) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo/adicionarproduto`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome,
+        review,
+        valor,
+        descricao,
+        imagem,
+        produtoCategoria,
+      }),
+    },
+  );
 
+  if (!response.ok) {
+    if (response.status === 400) {
+      throw new Error("falha ao criar produto, verifique os dados");
+    }
+
+    throw new Error("Erro ao criar produto");
+  }
+
+  return await response.json();
+}
 export async function register(
   name: string,
   email: string,
