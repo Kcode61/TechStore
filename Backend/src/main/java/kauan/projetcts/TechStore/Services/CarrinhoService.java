@@ -15,6 +15,12 @@ public class CarrinhoService {
     UserRepository userRepository;
 
     public CarrinhoResponse adicionarItemAoCarrinho(int id, User user) {
+        if (user.getCarrinho() == null) {
+            Carrinho carrinho = new Carrinho();
+            carrinho.setUser(user);
+            user.setCarrinho(carrinho);
+        }
+
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
         if (produtoBuscado.isPresent()) {
@@ -40,6 +46,7 @@ public class CarrinhoService {
     }
 
     public Carrinho listarItensDoCarrinho(User user) {
+        
         return user.getCarrinho();
     }
 

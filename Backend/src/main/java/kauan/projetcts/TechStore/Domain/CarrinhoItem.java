@@ -3,7 +3,7 @@ package kauan.projetcts.TechStore.Domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Setter
 @Getter
@@ -15,7 +15,6 @@ public class CarrinhoItem {
     private int quantidade;
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    @JsonIgnore
     private Produto produto;
     @ManyToOne
     @JoinColumn(name = "carrinho_id")

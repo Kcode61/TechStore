@@ -19,7 +19,6 @@ public class Carrinho {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonIgnore
     private List<CarrinhoItem> carrinhoItemList = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "user_id")
