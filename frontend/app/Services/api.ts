@@ -4,10 +4,20 @@ import { ProdutoCategoria } from "../types/produto";
 import { User } from "../types/user";
 
 export async function listarProdutos() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo/filtrarprodutos`,
     {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     },
   );
 
@@ -74,11 +84,18 @@ export async function adicionarProduto(
   imagem: string,
   produtoCategoria: ProdutoCategoria,
 ) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo/adicionarproduto`,
     {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -94,7 +111,11 @@ export async function adicionarProduto(
 
   if (!response.ok) {
     if (response.status === 400) {
-      throw new Error("falha ao criar produto, verifique os dados");
+      throw new Error("Falha ao criar produto, verifique os dados");
+    }
+
+    if (response.status === 403) {
+      throw new Error("Você não tem permissão para adicionar produtos");
     }
 
     throw new Error("Erro ao criar produto");
@@ -187,10 +208,20 @@ export async function removerDoCarrinho(produtoId: number): Promise<string> {
   return response.text();
 }
 export async function listarCatalogo() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo`,
     {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     },
   );
 
