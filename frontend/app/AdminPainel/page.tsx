@@ -7,7 +7,7 @@ import { Check, LucideShoppingBag, Plus, ShoppingCart } from "lucide-react";
 import { adicionarProduto as adicionarProdutoApi } from "../Services/api";
 import { ProductCard } from "@/components/ProductCard";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { User } from "../types/user";
 
 export default function AdminPainel() {
