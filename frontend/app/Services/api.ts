@@ -183,6 +183,30 @@ export async function listarCarrinho(): Promise<Carrinho> {
 
   return response.json();
 }
+export async function valorTotalCarrinho(): Promise<number> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/listarTotal`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar valor total do carrinho");
+  }
+
+  return response.json();
+}
 export async function removerDoCarrinho(produtoId: number): Promise<string> {
   const token = localStorage.getItem("token");
 

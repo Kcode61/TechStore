@@ -4,6 +4,7 @@ import {
   buscarUsuarioLogado,
   listarCarrinho,
   removerDoCarrinho,
+  valorTotalCarrinho,
 } from "../Services/api";
 import { Carrinho } from "../types/carrinho";
 import {
@@ -11,6 +12,7 @@ import {
   LucideShoppingBag,
   Minus,
   Plus,
+  ShoppingBag,
   Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -18,6 +20,7 @@ import Link from "next/link";
 
 export default function carrinho() {
   const [carrinhoItens, setCarrinho] = useState<Carrinho | null>(null);
+  const [subtotal, setSubtotal] = useState<number>(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -27,6 +30,7 @@ export default function carrinho() {
       router.push("/login");
     }
   }, [router]);
+
   const handleRemover = async (produtoId: number) => {
     try {
       await removerDoCarrinho(produtoId);
@@ -57,6 +61,24 @@ export default function carrinho() {
 
     carregarCarrinho();
   }, []);
+  function onCheckout() {
+    router.push("/");
+  }
+  useEffect(() => {
+    async function carregarValorTotal() {
+      try {
+        const dados = await valorTotalCarrinho();
+        setSubtotal(dados);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    carregarValorTotal();
+  }, []);
+  const formatCurrency = (value: number) =>
+    value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
   return (
     <section className=" bg-[#F8F9FB] py-16">
       <div className="mx-auto max-w-[1340px] px-6">
@@ -98,7 +120,6 @@ export default function carrinho() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 py-10 md:grid-cols-3">
-            <div></div>
             <div className="flex flex-col gap-4 md:col-span-2">
               {carrinhoItens?.carrinhoItemList.map((item) => (
                 <div
@@ -171,6 +192,62 @@ export default function carrinho() {
                 </div>
               ))}
             </div>
+            <aside className="sticky top-24 flex flex-col rounded-xl border border-[#E2E8F0] bg-white p-5">
+              <header className="mb-4 flex items-center gap-2">
+                <ShoppingBag size={18} className="text-[#2D5BFF]" />
+                <h2 className="text-base font-semibold text-[#0F172A]">
+                  Resumo do pedido
+                </h2>
+              </header>
+
+              <div className="flex flex-col gap-3 border-b border-[#E2E8F0] pb-4">
+                {carrinhoItens?.carrinhoItemList.map((item) => (
+                  <div key={item.itemId} className="flex items-center gap-3">
+                    <img
+                      src={item.produto.produtoImage}
+                      alt={item.produto.produtoNome}
+                      className="h-12 w-12 rounded-lg object-cover"
+                    />
+                    <div className="flex flex-1 flex-col">
+                      <p className="line-clamp-1 text-sm font-medium text-[#0F172A]">
+                        {item.produto.produtoNome}
+                      </p>
+                      <span className="text-xs text-[#73839A]">
+                        Qtd: {item.quantidade}
+                      </span>
+                    </div>
+                    <span className="text-sm font-semibold text-[#0F172A]">
+                      {formatCurrency(
+                        item.produto.produtoValor * item.quantidade,
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-between py-4">
+                <span className="text-sm text-[#73839A]">Subtotal</span>
+                <span className="text-sm font-semibold text-[#0F172A]">
+                  {formatCurrency(subtotal)}
+                </span>
+              </div>
+
+              <div className="mb-4 flex items-center justify-between border-t border-[#E2E8F0] pt-4">
+                <span className="text-base font-semibold text-[#0F172A]">
+                  Total
+                </span>
+                <span className="text-xl font-bold text-[#0F172A]">
+                  {formatCurrency(subtotal)}
+                </span>
+              </div>
+
+              <button
+                onClick={onCheckout}
+                className="w-full rounded-full bg-[#2D5BFF] py-3 text-sm font-semibold text-white transition hover:opacity-90"
+              >
+                Finalizar compra
+              </button>
+            </aside>
           </div>
         )}
       </div>
