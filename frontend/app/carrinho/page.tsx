@@ -98,7 +98,8 @@ export default function carrinho() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 py-10 md:grid-cols-3">
-            <div className="flex flex-col gap-4">
+            <div></div>
+            <div className="flex flex-col gap-4 md:col-span-2">
               {carrinhoItens?.carrinhoItemList.map((item) => (
                 <div
                   key={item.itemId}
