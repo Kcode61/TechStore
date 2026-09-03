@@ -22,14 +22,22 @@ public class CarrinhoController {
         User user = userService.GetUsuarioLogado(authentication);
         return carrinhoService.listarItensDoCarrinho(user);
     }
+
     @PostMapping("/{id}")
     public CarrinhoItem adicionarItemAoCarrinho(Authentication authentication, @PathVariable int id) {
         User user = userService.GetUsuarioLogado(authentication);
         return carrinhoService.adicionarItemAoCarrinho(id, user).carrinhoItem();
     }
+
     @DeleteMapping("/{id}")
     public String removerItemDoCarrinho(Authentication authentication, @PathVariable int id) {
         User user = userService.GetUsuarioLogado(authentication);
         return carrinhoService.removerItemDoCarrinho(id, user);
+    }
+
+    @GetMapping("/listarTotal")
+    public Double listarValorTotalDoCarrinho(Authentication authentication) {
+        User user = userService.GetUsuarioLogado(authentication);
+        return carrinhoService.calcularValorTotal(user);
     }
 }

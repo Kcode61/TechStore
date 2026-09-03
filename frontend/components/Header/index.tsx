@@ -64,12 +64,14 @@ export function Header() {
 
         {usuario ? (
           <div className="flex items-center gap-3">
-            <Link
-              href="/AdminPainel"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-all duration-300 hover:border-[#3567F4] hover:bg-[#EEF3FF] hover:text-[#3567F4]"
-            >
-              <ShieldAlert size={18} />
-            </Link>
+            {usuario.cargo === "ADMIN" && (
+              <Link
+                href="/AdminPainel"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-all duration-300 hover:border-[#3567F4] hover:bg-[#EEF3FF] hover:text-[#3567F4]"
+              >
+                <ShieldAlert size={18} />
+              </Link>
+            )}
             <Link
               href="/carrinho"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-all duration-300 hover:border-[#3567F4] hover:bg-[#EEF3FF] hover:text-[#3567F4]"

@@ -14,6 +14,7 @@ public class CarrinhoService {
     @Autowired
     UserRepository userRepository;
 
+
     public CarrinhoResponse adicionarItemAoCarrinho(int id, User user) {
         if (user.getCarrinho() == null) {
             Carrinho carrinho = new Carrinho();
@@ -45,8 +46,28 @@ public class CarrinhoService {
         return new CarrinhoResponse("Produto não encontrado", null);
     }
 
+    public double calcularValorTotal(User user) {
+
+        Carrinho carrinho = user.getCarrinho();
+
+        if (carrinho == null) {
+            return 0;
+        }
+
+        double total = 0;
+
+        for (CarrinhoItem item : carrinho.getCarrinhoItemList()) {
+            total += item.getProduto().getProdutoValor() * item.getQuantidade();
+        }
+
+        carrinho.setValorTotal(total);
+        userRepository.save(user);
+
+        return total;
+    }
+
     public Carrinho listarItensDoCarrinho(User user) {
-        
+
         return user.getCarrinho();
     }
 
