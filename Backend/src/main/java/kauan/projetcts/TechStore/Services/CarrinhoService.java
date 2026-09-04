@@ -46,6 +46,52 @@ public class CarrinhoService {
         return new CarrinhoResponse("Produto não encontrado", null);
     }
 
+    public CarrinhoResponse adicionarQuantidade(int id, User user) {
+
+        if (user.getCarrinho() == null) {
+            return new CarrinhoResponse("Carrinho não encontrado", null);
+        }
+
+        List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
+
+        Optional<Produto> produtoBuscado = produtoRepository.findById(id);
+
+        if (produtoBuscado.isEmpty()) {
+            return new CarrinhoResponse("Produto não encontrado", null);
+        }
+
+        Produto produto = produtoBuscado.get();
+
+        for (CarrinhoItem carrinhoItem : itensDoCarrinho) {
+
+            if (carrinhoItem.getProduto().getId() == produto.getId()) {
+
+                carrinhoItem.setQuantidade(carrinhoItem.getQuantidade() + 1);
+
+                userRepository.save(user);
+
+                return new CarrinhoResponse(null, carrinhoItem);
+            }
+        }
+
+        return new CarrinhoResponse("Produto não está no carrinho", null);
+    }
+
+    public String esvaziarCarrinho(User user) {
+
+        if (user.getCarrinho() == null) {
+            return "Carrinho já está vazio";
+        }
+
+        user.getCarrinho().getCarrinhoItemList().clear();
+
+        user.getCarrinho().setValorTotal(0);
+
+        userRepository.save(user);
+
+        return "Carrinho esvaziado com sucesso";
+    }
+
     public double calcularValorTotal(User user) {
 
         Carrinho carrinho = user.getCarrinho();

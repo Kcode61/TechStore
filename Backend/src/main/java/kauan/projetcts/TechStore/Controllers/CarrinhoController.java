@@ -6,6 +6,7 @@ import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Services.CarrinhoService;
 import kauan.projetcts.TechStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,22 @@ public class CarrinhoController {
     public String removerItemDoCarrinho(Authentication authentication, @PathVariable int id) {
         User user = userService.GetUsuarioLogado(authentication);
         return carrinhoService.removerItemDoCarrinho(id, user);
+    }
+
+    @PostMapping("quantidade/{id}")
+    public CarrinhoItem adicionarQuantidade(Authentication authentication, @PathVariable int id) {
+        User user = userService.GetUsuarioLogado(authentication);
+        return carrinhoService.adicionarQuantidade(id, user).carrinhoItem();
+    }
+
+    @DeleteMapping("/esvaziar")
+    public ResponseEntity<String> esvaziarCarrinho(Authentication authentication) {
+
+        User user = userService.GetUsuarioLogado(authentication);
+
+        String resposta = carrinhoService.esvaziarCarrinho(user);
+
+        return ResponseEntity.ok(resposta);
     }
 
     @GetMapping("/listarTotal")
