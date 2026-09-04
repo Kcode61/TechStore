@@ -36,10 +36,16 @@ public class CarrinhoController {
         return carrinhoService.removerItemDoCarrinho(id, user);
     }
 
-    @PostMapping("quantidade/{id}")
-    public CarrinhoItem adicionarQuantidade(Authentication authentication, @PathVariable int id) {
+     @PutMapping("/quantidade/{id}")
+    public CarrinhoItem adicionarQuantidade(
+            Authentication authentication,
+            @PathVariable int id
+    ) {
         User user = userService.GetUsuarioLogado(authentication);
-        return carrinhoService.adicionarQuantidade(id, user).carrinhoItem();
+
+        return carrinhoService
+                .adicionarQuantidade(id, user)
+                .carrinhoItem();
     }
 
     @DeleteMapping("/esvaziar")

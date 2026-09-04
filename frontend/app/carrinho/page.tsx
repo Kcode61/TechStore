@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import {
+  adicionarQuantidadeCarrinho,
   buscarUsuarioLogado,
   listarCarrinho,
   removerDoCarrinho,
@@ -20,7 +21,11 @@ import Link from "next/link";
 
 export default function carrinho() {
   const [carrinhoItens, setCarrinho] = useState<Carrinho | null>(null);
-  const [subtotal, setSubtotal] = useState<number>(0);
+  const subtotal =
+    carrinhoItens?.carrinhoItemList.reduce(
+      (total, item) => total + item.produto.produtoValor * item.quantidade,
+      0,
+    ) ?? 0;
   const router = useRouter();
 
   useEffect(() => {
@@ -49,6 +54,64 @@ export default function carrinho() {
       console.error("Erro ao remover produto:", error);
     }
   };
+  const handleQuantidadeChange = (
+    produtoId: number,
+    novaQuantidade: number,
+  ) => {
+    setCarrinho((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        carrinhoItemList: prev.carrinhoItemList.map((item) =>
+          item.produto.id === produtoId
+            ? { ...item, quantidade: novaQuantidade }
+            : item,
+        ),
+      };
+    });
+  };
+  const handleEsvaziarCarrinho = async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/esvaziar`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao esvaziar o carrinho");
+    }
+
+    setCarrinho((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        carrinhoItemList: [],
+      };
+    });
+  };
+  const onCheckout = async () => {
+    try {
+      await handleEsvaziarCarrinho();
+      router.push("/");
+    } catch (error) {
+      console.error("Erro ao finalizar compra:", error);
+    }
+  };
+  const handleAdicionarQuantidade = async (produtoId: number) => {
+    try {
+      const itemAtualizado = await adicionarQuantidadeCarrinho(produtoId);
+
+      handleQuantidadeChange(produtoId, itemAtualizado.quantidade);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     async function carregarCarrinho() {
       try {
@@ -61,21 +124,7 @@ export default function carrinho() {
 
     carregarCarrinho();
   }, []);
-  function onCheckout() {
-    router.push("/");
-  }
-  useEffect(() => {
-    async function carregarValorTotal() {
-      try {
-        const dados = await valorTotalCarrinho();
-        setSubtotal(dados);
-      } catch (error) {
-        console.error(error);
-      }
-    }
 
-    carregarValorTotal();
-  }, []);
   const formatCurrency = (value: number) =>
     value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
@@ -150,18 +199,14 @@ export default function carrinho() {
                     </div>
 
                     <div className="mt-5 flex w-fit items-center overflow-hidden rounded-full border border-[#E1E5EB]">
-                      <button
-                        type="button"
-                        className="flex h-8 w-9 items-center justify-center text-[#64748B] transition hover:bg-[#F8F9FB] hover:text-black"
-                      >
-                        <Minus size={15} />
-                      </button>
-
                       <span className="flex h-8 w-9 items-center justify-center text-sm font-medium text-black">
                         {item.quantidade}
                       </span>
 
                       <button
+                        onClick={() =>
+                          handleAdicionarQuantidade(item.produto.id)
+                        }
                         type="button"
                         className="flex h-8 w-9 items-center justify-center text-[#64748B] transition hover:bg-[#F8F9FB] hover:text-black"
                       >

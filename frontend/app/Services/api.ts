@@ -231,6 +231,56 @@ export async function removerDoCarrinho(produtoId: number): Promise<string> {
 
   return response.text();
 }
+export async function adicionarQuantidadeCarrinho(
+  produtoId: number,
+): Promise<CarrinhoItem> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/quantidade/${produtoId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao adicionar quantidade do produto no carrinho");
+  }
+
+  return response.json();
+}
+export async function esvaziarCarrinho(): Promise<string> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/esvaziar`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao esvaziar carrinho");
+  }
+
+  return response.text();
+}
 export async function listarCatalogo() {
   const token = localStorage.getItem("token");
 
