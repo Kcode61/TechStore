@@ -281,6 +281,30 @@ export async function esvaziarCarrinho(): Promise<string> {
 
   return response.text();
 }
+export async function buscarProdutoPorId(id: number) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao buscar produto");
+  }
+
+  return response.json();
+}
 export async function listarCatalogo() {
   const token = localStorage.getItem("token");
 
