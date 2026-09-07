@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {
   adicionarQuantidadeCarrinho,
   buscarUsuarioLogado,
+  diminuirQuantidadeCarrinho,
   listarCarrinho,
   removerDoCarrinho,
   valorTotalCarrinho,
@@ -112,6 +113,30 @@ export default function carrinho() {
       console.error(error);
     }
   };
+  const handleDiminuirQuantidade = async (produtoId: number) => {
+    try {
+      const response = await diminuirQuantidadeCarrinho(produtoId);
+
+      setCarrinho((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          carrinhoItemList: response.item
+            ? prev.carrinhoItemList.map((item) =>
+                item.produto.id === produtoId
+                  ? { ...item, quantidade: response.item!.quantidade }
+                  : item,
+              )
+            : prev.carrinhoItemList.filter(
+                (item) => item.produto.id !== produtoId,
+              ),
+        };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     async function carregarCarrinho() {
       try {
@@ -199,6 +224,15 @@ export default function carrinho() {
                     </div>
 
                     <div className="mt-5 flex w-fit items-center overflow-hidden rounded-full border border-[#E1E5EB]">
+                      <button
+                        onClick={() =>
+                          handleDiminuirQuantidade(item.produto.id)
+                        }
+                        type="button"
+                        className="flex h-8 w-9 items-center justify-center text-[#64748B] transition hover:bg-[#F8F9FB] hover:text-black"
+                      >
+                        <Minus size={15} />
+                      </button>
                       <span className="flex h-8 w-9 items-center justify-center text-sm font-medium text-black">
                         {item.quantidade}
                       </span>

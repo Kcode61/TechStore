@@ -241,7 +241,7 @@ export async function adicionarQuantidadeCarrinho(
   }
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/quantidade/${produtoId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/quantidadeaumentar/${produtoId}`,
     {
       method: "PUT",
       headers: {
@@ -256,6 +256,37 @@ export async function adicionarQuantidadeCarrinho(
   }
 
   return response.json();
+}
+export async function diminuirQuantidadeCarrinho(
+  produtoId: number,
+): Promise<{ mensagem: string | null; item: CarrinhoItem | null }> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/carrinho/quantidadediminuir/${produtoId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao diminuir quantidade do produto no carrinho");
+  }
+
+  const data = await response.json();
+
+  return {
+    mensagem: data.erro ?? null,
+    item: data.carrinhoItem ?? null,
+  };
 }
 export async function esvaziarCarrinho(): Promise<string> {
   const token = localStorage.getItem("token");

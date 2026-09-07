@@ -2,6 +2,7 @@ package kauan.projetcts.TechStore.Controllers;
 
 import kauan.projetcts.TechStore.Domain.Carrinho;
 import kauan.projetcts.TechStore.Domain.CarrinhoItem;
+import kauan.projetcts.TechStore.Domain.CarrinhoResponse;
 import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Services.CarrinhoService;
 import kauan.projetcts.TechStore.Services.UserService;
@@ -36,16 +37,18 @@ public class CarrinhoController {
         return carrinhoService.removerItemDoCarrinho(id, user);
     }
 
-    @PutMapping("/quantidade/{id}")
-    public CarrinhoItem adicionarQuantidade(
-            Authentication authentication,
-            @PathVariable int id
-    ) {
+    @PutMapping("/quantidadeaumentar/{id}")
+    public CarrinhoItem adicionarQuantidade(Authentication authentication, @PathVariable int id) {
         User user = userService.GetUsuarioLogado(authentication);
 
-        return carrinhoService
-                .adicionarQuantidade(id, user)
-                .carrinhoItem();
+        return carrinhoService.adicionarQuantidade(id, user).carrinhoItem();
+    }
+
+    @PutMapping("/quantidadediminuir/{id}")
+    public CarrinhoResponse diminuirQuantidade(Authentication authentication, @PathVariable int id) {
+        User user = userService.GetUsuarioLogado(authentication);
+
+        return carrinhoService.diminuirQuantidade(id, user);
     }
 
     @DeleteMapping("/esvaziar")

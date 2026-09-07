@@ -55,7 +55,6 @@ public class CarrinhoService {
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
 
 
-
         for (CarrinhoItem carrinhoItem : itensDoCarrinho) {
 
             if (carrinhoItem.getProduto().getId() == id) {
@@ -70,6 +69,7 @@ public class CarrinhoService {
 
         return new CarrinhoResponse("Produto não está no carrinho", null);
     }
+
     public CarrinhoResponse diminuirQuantidade(int id, User user) {
 
         if (user.getCarrinho() == null) {
@@ -78,20 +78,33 @@ public class CarrinhoService {
 
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
 
+        CarrinhoItem itemEncontrado = null;
+
         for (CarrinhoItem carrinhoItem : itensDoCarrinho) {
 
             if (carrinhoItem.getProduto().getId() == id) {
 
                 if (carrinhoItem.getQuantidade() > 1) {
+
                     carrinhoItem.setQuantidade(carrinhoItem.getQuantidade() - 1);
-                } else {
-                    itensDoCarrinho.remove(carrinhoItem);
+
+                    userRepository.save(user);
+
+                    return new CarrinhoResponse(null, carrinhoItem);
                 }
 
-                userRepository.save(user);
-
-                return new CarrinhoResponse(null, carrinhoItem);
+                itemEncontrado = carrinhoItem;
+                break;
             }
+        }
+
+        if (itemEncontrado != null) {
+
+            itensDoCarrinho.remove(itemEncontrado);
+
+            userRepository.save(user);
+
+            return new CarrinhoResponse("Item removido do carrinho", null);
         }
 
         return new CarrinhoResponse("Produto não está no carrinho", null);
@@ -139,7 +152,7 @@ public class CarrinhoService {
 
     public String removerItemDoCarrinho(int id, User user) {
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
-        boolean removido = itensDoCarrinho.removeIf(carrinhoItem1 -> carrinhoItem1.getItemId() == id);
+        boolean removido = itensDoCarrinho.removeIf(item -> item.getProduto().getId() == id);
         userRepository.save(user);
         if (removido) {
             return "Sucesso ao excluir item";
