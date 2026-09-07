@@ -36,7 +36,7 @@ public class CarrinhoController {
         return carrinhoService.removerItemDoCarrinho(id, user);
     }
 
-     @PutMapping("/quantidade/{id}")
+    @PutMapping("/quantidade/{id}")
     public CarrinhoItem adicionarQuantidade(
             Authentication authentication,
             @PathVariable int id

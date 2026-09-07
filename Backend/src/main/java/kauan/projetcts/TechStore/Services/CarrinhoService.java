@@ -54,19 +54,39 @@ public class CarrinhoService {
 
         List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
 
-        Optional<Produto> produtoBuscado = produtoRepository.findById(id);
 
-        if (produtoBuscado.isEmpty()) {
-            return new CarrinhoResponse("Produto não encontrado", null);
-        }
-
-        Produto produto = produtoBuscado.get();
 
         for (CarrinhoItem carrinhoItem : itensDoCarrinho) {
 
-            if (carrinhoItem.getProduto().getId() == produto.getId()) {
+            if (carrinhoItem.getProduto().getId() == id) {
 
                 carrinhoItem.setQuantidade(carrinhoItem.getQuantidade() + 1);
+
+                userRepository.save(user);
+
+                return new CarrinhoResponse(null, carrinhoItem);
+            }
+        }
+
+        return new CarrinhoResponse("Produto não está no carrinho", null);
+    }
+    public CarrinhoResponse diminuirQuantidade(int id, User user) {
+
+        if (user.getCarrinho() == null) {
+            return new CarrinhoResponse("Carrinho não encontrado", null);
+        }
+
+        List<CarrinhoItem> itensDoCarrinho = user.getCarrinho().getCarrinhoItemList();
+
+        for (CarrinhoItem carrinhoItem : itensDoCarrinho) {
+
+            if (carrinhoItem.getProduto().getId() == id) {
+
+                if (carrinhoItem.getQuantidade() > 1) {
+                    carrinhoItem.setQuantidade(carrinhoItem.getQuantidade() - 1);
+                } else {
+                    itensDoCarrinho.remove(carrinhoItem);
+                }
 
                 userRepository.save(user);
 
