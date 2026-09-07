@@ -4,7 +4,6 @@ import kauan.projetcts.TechStore.Domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +12,10 @@ import java.util.Optional;
 public class ProductService {
     @Autowired
     ProdutoRepository produtoRepository;
+    @Autowired
+    CarrinhoItemRepository carrinhoItemRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public List<Produto> listarProdutosDoCatalogo() {
         return produtoRepository.findAll();
@@ -23,6 +26,21 @@ public class ProductService {
         if (produtoBuscado.isEmpty()) {
             throw new RuntimeException("Produto não encontrado");
         }
+
+        var itens = carrinhoItemRepository.findByProduto_Id(id);
+        for (CarrinhoItem item : itens) {
+            Carrinho carrinho = item.getCarrinho();
+            if (carrinho != null) {
+                carrinho.getCarrinhoItemList().removeIf(ci -> ci.getItemId() == item.getItemId());
+                if (carrinho.getUser() != null) {
+                    userRepository.save(carrinho.getUser());
+                }
+            } else {
+
+                carrinhoItemRepository.delete(item);
+            }
+        }
+
         produtoRepository.deleteById(id);
     }
 
@@ -47,14 +65,13 @@ public class ProductService {
 
         return produtoRepository.save(produtoNovo);
     }
-   public List<Produto> filtrarProdutosPorReviews() {
-    List<Produto> catalogo = produtoRepository.findAll();
 
-    return catalogo.stream()
-            .sorted(Comparator.comparing(Produto::getReviewsCount).reversed())
-            .limit(10)
-            .toList();
-}   
+    public List<Produto> filtrarProdutosPorReviews() {
+        List<Produto> catalogo = produtoRepository.findAll();
+
+        return catalogo.stream().sorted(Comparator.comparing(Produto::getReviewsCount).reversed()).limit(10).toList();
+    }
+
     public Produto atualizarProdutoDoCatalogo(int id, NovoProdutoDTO novoProdutoDTO) {
 
         Produto produtoBuscado = buscarProdutoPorId(id);
