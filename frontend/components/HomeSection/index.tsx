@@ -35,14 +35,6 @@ export function HomeSection() {
     carregarUsuario();
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      router.push("/login");
-    }
-  }, [router]);
-
   return (
     <section className="pt-32  bg-white">
       <div className="max-w-[1340px] mx-auto">
