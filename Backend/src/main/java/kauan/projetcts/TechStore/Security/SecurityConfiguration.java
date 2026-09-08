@@ -35,7 +35,10 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"), List.of("https://tech-store-three-virid.vercel.app/login"));
+        configuration.setAllowedOrigins(List.of(
+    "http://localhost:3000",
+    "https://tech-store-three-virid.vercel.app"
+));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
