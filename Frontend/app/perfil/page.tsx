@@ -37,14 +37,14 @@ export default function Perfil() {
   }
 
   return (
-    <section className=" bg-[#F8F9FB] py-16">
-      <div className="mx-auto max-w-[1340px] px-6">
-        <div className="mb-10">
-          <p className="mb-2 font-mono text-xs uppercase tracking-[0.25em] text-[#73839A]">
+    <section className="bg-[#F8F9FB] py-12 md:py-16">
+      <div className="mx-auto max-w-[1340px] px-4 md:px-6">
+        <div className="mb-8 md:mb-10">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[#73839A] md:text-xs">
             Conta
           </p>
 
-          <h1 className="font-inter text-4xl font-bold tracking-tight text-[#111318]">
+          <h1 className="font-inter text-3xl font-bold tracking-tight text-[#111318] md:text-4xl">
             Minha conta
           </h1>
 
@@ -55,29 +55,29 @@ export default function Perfil() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
           <div className="overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white">
-            <div className="border-b border-[#E5E7EB] px-8 py-8">
-              <div className="flex items-center gap-5">
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#ECEFFD] text-[#4F75F5]">
-                  <User2Icon size={34} />
+            <div className="border-b border-[#E5E7EB] px-4 py-6 md:px-8 md:py-8">
+              <div className="flex items-center gap-4 md:gap-5">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#ECEFFD] text-[#4F75F5] md:h-20 md:w-20">
+                  <User2Icon size={30} md:size={34} />
                 </div>
 
                 <div>
-                  <h2 className="font-inter text-xl font-bold text-[#111318]">
+                  <h2 className="font-inter text-lg font-bold text-[#111318] md:text-xl">
                     {usuario?.nome || "Carregando..."}
                   </h2>
 
-                  <p className="mt-1 font-mono text-xs tracking-wide text-[#73839A]">
+                  <p className="mt-1 font-mono text-[10px] tracking-wide text-[#73839A] md:text-xs">
                     {usuario?.email || "Carregando..."}
                   </p>
 
-                  <span className="mt-3 inline-flex rounded-full bg-[#F1F3FF] px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-[#4F75F5]">
+                  <span className="mt-3 inline-flex rounded-full bg-[#F1F3FF] px-3 py-1 font-mono text-[9px] uppercase tracking-wider text-[#4F75F5] md:text-[10px]">
                     {usuario?.cargo || "Usuário"}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="px-8 py-7">
+            <div className="px-4 py-5 md:px-8 md:py-7">
               <div className="mb-6">
                 <h3 className="font-inter text-base font-bold text-[#111318]">
                   Informações pessoais
@@ -89,7 +89,7 @@ export default function Perfil() {
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="rounded-xl border border-[#E5E7EB] p-5">
+                <div className="rounded-xl border border-[#E5E7EB] p-4 md:p-5">
                   <div className="mb-3 flex items-center gap-2 text-[#73839A]">
                     <User2Icon size={16} />
                     <span className="font-mono text-[10px] uppercase tracking-wider">
@@ -102,7 +102,7 @@ export default function Perfil() {
                   </p>
                 </div>
 
-                <div className="rounded-xl border border-[#E5E7EB] p-5">
+                <div className="rounded-xl border border-[#E5E7EB] p-4 md:p-5">
                   <div className="mb-3 flex items-center gap-2 text-[#73839A]">
                     <Mail size={16} />
                     <span className="font-mono text-[10px] uppercase tracking-wider">
@@ -115,7 +115,7 @@ export default function Perfil() {
                   </p>
                 </div>
 
-                <div className="rounded-xl border border-[#E5E7EB] p-5">
+                <div className="rounded-xl border border-[#E5E7EB] p-4 md:p-5">
                   <div className="mb-3 flex items-center gap-2 text-[#73839A]">
                     <ShieldCheck size={16} />
                     <span className="font-mono text-[10px] uppercase tracking-wider">
@@ -139,7 +139,7 @@ export default function Perfil() {
           </div>
 
           <div className="flex flex-col gap-6">
-            <div className="rounded-2xl border border-[#FECACA] bg-white p-6">
+            <div className="rounded-2xl border border-[#FECACA] bg-white p-4 md:p-6">
               <p className="font-inter text-sm font-bold text-[#111318]">
                 Sair da conta
               </p>

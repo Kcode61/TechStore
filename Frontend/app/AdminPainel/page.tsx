@@ -91,19 +91,19 @@ export default function AdminPainel() {
     return null;
   }
   return (
-    <section className="min-h-screen bg-white py-16">
-      <div className="mx-auto max-w-[1340px] px-6">
+    <section className="min-h-screen bg-white py-12 md:py-16">
+      <div className="mx-auto max-w-[1340px] px-4 md:px-6">
         <div className="flex flex-col gap-2 border-b border-[#E5E7EB] py-5">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#73839A] md:text-xs">
             Painel administrativo
           </p>
 
           <div className="flex flex-wrap items-end justify-between gap-3">
-            <h2 className="font-inter text-4xl font-bold text-black">
+            <h2 className="font-inter text-3xl font-bold text-black md:text-4xl">
               Produtos
             </h2>
 
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A]">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#73839A] md:text-xs">
               {loading
                 ? "Carregando..."
                 : `${produtos.length} produto(s) encontrado(s)`}
@@ -111,8 +111,8 @@ export default function AdminPainel() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 py-10 md:grid-cols-3">
-          <div className="rounded-2xl border border-[#E0E3E8] bg-white p-8">
+        <div className="grid grid-cols-1 gap-6 py-8 md:grid-cols-3 md:py-10">
+          <div className="rounded-2xl border border-[#E0E3E8] bg-white p-5 md:p-8">
             <div className="mb-7">
               <h3 className="font-inter text-lg font-bold text-black">
                 Adicionar produto
@@ -146,7 +146,7 @@ export default function AdminPainel() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <label
                     htmlFor="categoria"

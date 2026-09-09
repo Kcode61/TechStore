@@ -36,8 +36,8 @@ export default function Register() {
   }, [router]);
 
   return (
-    <section className="bg-white py-16">
-      <div className="mx-auto max-w-[1340px] px-6">
+    <section className="bg-white py-12 md:py-16">
+      <div className="mx-auto max-w-[1340px] px-4 md:px-6">
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-2">
             <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#3567F4] text-white">
@@ -53,7 +53,7 @@ export default function Register() {
             </p>
           </div>
 
-          <div className="w-full max-w-[450px] rounded-xl border border-[#E5E7EB] p-8 shadow-sm">
+          <div className="w-full max-w-[450px] rounded-xl border border-[#E5E7EB] p-5 shadow-sm md:p-8">
             <form onSubmit={handleRegister} className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
                 <label

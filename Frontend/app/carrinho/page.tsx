@@ -154,9 +154,11 @@ export default function carrinho() {
     value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   return (
-    <section className=" bg-[#F8F9FB] py-16">
-      <div className="mx-auto max-w-[1340px] px-6">
-        <h2 className="font-inter text-4xl font-bold text-black ">Carrinho</h2>
+    <section className="bg-[#F8F9FB] py-12 md:py-16">
+      <div className="mx-auto max-w-[1340px] px-4 md:px-6">
+        <h2 className="font-inter text-3xl font-bold text-black md:text-4xl">
+          Carrinho
+        </h2>
 
         {!carrinhoItens?.carrinhoItemList?.length ? (
           <div className="flex min-h-[300px] flex-col items-center justify-center gap-5 py-5 text-[#73839A]">
@@ -177,30 +179,30 @@ export default function carrinho() {
                 Seu carrinho está vazio
               </h3>
 
-              <p className="max-w-xl mb-4 text-center font-jet text-sm leading-relaxed text-[#73839A]">
+              <p className="mb-4 max-w-xl text-center font-jet text-sm leading-relaxed text-[#73839A]">
                 Explore nossos produtos e adicione itens ao carrinho.
               </p>
               <Link
                 href="/produtos"
-                className="flex gap-2 mb-2 text-sm text-white w-fit group font-bold font-inter items-center rounded-full py-3 cursor-pointer px-8 bg-[#0E1629] hover:bg-gradient-to-r from-[#3567F4] to-[#3567F4] transition ease duration-300 "
+                className="mb-2 flex w-fit cursor-pointer items-center gap-2 rounded-full bg-[#0E1629] px-8 py-3 text-sm font-bold text-white transition duration-300 hover:bg-gradient-to-r hover:from-[#3567F4] hover:to-[#3567F4]"
               >
                 Ver produtos
                 <ArrowUpRight
                   size={17}
-                  className="transition-all ease duration-200 group-hover:-translate-y-1 group-hover:translate-1"
+                  className="transition-all duration-200 group-hover:-translate-y-1 group-hover:translate-x-1"
                 />
               </Link>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 py-10 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 py-8 md:grid-cols-3 md:py-10">
             <div className="flex flex-col gap-4 md:col-span-2">
               {carrinhoItens?.carrinhoItemList.map((item) => (
                 <div
                   key={item.itemId}
-                  className="flex min-h-[130px] items-center gap-4 rounded-xl border border-[#E1E5EB] bg-white p-4"
+                  className="flex flex-col gap-4 rounded-xl border border-[#E1E5EB] bg-white p-4 sm:flex-row sm:items-center"
                 >
-                  <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-xl bg-[#F8F9FB]">
+                  <div className="flex h-24 w-24 shrink-0 items-center justify-center self-center rounded-xl bg-[#F8F9FB] sm:self-auto">
                     <img
                       src={item.produto.produtoImage}
                       alt={item.produto.produtoNome}
@@ -249,7 +251,7 @@ export default function carrinho() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-5">
+                  <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end">
                     <span className="font-inter text-sm font-bold text-[#111827]">
                       {(
                         item.produto.produtoValor * item.quantidade
@@ -271,7 +273,7 @@ export default function carrinho() {
                 </div>
               ))}
             </div>
-            <aside className="sticky top-24 flex flex-col rounded-xl border border-[#E2E8F0] bg-white p-5">
+            <aside className="top-24 flex flex-col rounded-xl border border-[#E2E8F0] bg-white p-5 md:sticky">
               <header className="mb-4 flex items-center gap-2">
                 <ShoppingBag size={18} className="text-[#2D5BFF]" />
                 <h2 className="text-base font-semibold text-[#0F172A]">

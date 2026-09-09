@@ -88,8 +88,8 @@ export default function ProductPage() {
 
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
-      <div className="mx-auto max-w-[1340px] px-6 py-10 md:py-16">
-        <div className="mb-8 flex items-center gap-2 text-sm text-[#73839A]">
+      <div className="mx-auto max-w-[1340px] px-4 py-8 md:px-6 md:py-16">
+        <div className="mb-8 flex flex-wrap items-center gap-2 text-xs text-[#73839A] md:text-sm">
           <Link href="/">Início</Link>
           <span>/</span>
           <Link href="/produtos">Produtos</Link>
@@ -99,7 +99,7 @@ export default function ProductPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div className="relative">
             <div className="group relative aspect-square overflow-hidden rounded-[28px] border border-[#E2E8F0] bg-white shadow-sm">
               <img
@@ -108,29 +108,29 @@ export default function ProductPage() {
                 className="h-full w-full object-contain p-8 transition duration-500 group-hover:scale-[1.03] md:p-14"
               />
 
-              <div className="absolute left-5 top-5 rounded-full bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#3567F3] shadow-sm backdrop-blur">
+              <div className="absolute left-5 top-5 rounded-full bg-white/90 px-4 py-2 text-[10px] font-bold uppercase tracking-wide text-[#3567F3] shadow-sm backdrop-blur md:text-xs">
                 {produto.produtoCategoria}
               </div>
             </div>
 
             <div className="mt-5 grid grid-cols-3 gap-3">
-              <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-4 text-center">
+              <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-3 text-center md:p-4">
                 <Truck size={20} className="mb-2 text-[#3567F3]" />
-                <span className="text-xs font-semibold text-[#0F172A]">
+                <span className="text-[10px] font-semibold text-[#0F172A] md:text-xs">
                   Envio rápido
                 </span>
               </div>
 
-              <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-4 text-center">
+              <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-3 text-center md:p-4">
                 <ShieldCheck size={20} className="mb-2 text-[#3567F3]" />
-                <span className="text-xs font-semibold text-[#0F172A]">
+                <span className="text-[10px] font-semibold text-[#0F172A] md:text-xs">
                   Compra segura
                 </span>
               </div>
 
-              <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-4 text-center">
+              <div className="flex flex-col items-center rounded-2xl border border-[#E2E8F0] bg-white p-3 text-center md:p-4">
                 <Package size={20} className="mb-2 text-[#3567F3]" />
-                <span className="text-xs font-semibold text-[#0F172A]">
+                <span className="text-[10px] font-semibold text-[#0F172A] md:text-xs">
                   Produto original
                 </span>
               </div>
@@ -138,15 +138,15 @@ export default function ProductPage() {
           </div>
 
           <div className="flex flex-col justify-center">
-            <span className="mb-4 w-fit rounded-full bg-[#EEF4FF] px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#3567F3]">
+            <span className="mb-4 w-fit rounded-full bg-[#EEF4FF] px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-[#3567F3] md:text-xs">
               {produto.produtoCategoria}
             </span>
 
-            <h1 className="max-w-2xl text-4xl font-extrabold leading-tight tracking-tight text-[#0F172A] md:text-5xl">
+            <h1 className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-[#0F172A] md:text-5xl">
               {produto.produtoNome}
             </h1>
 
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-5 flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
@@ -178,7 +178,7 @@ export default function ProductPage() {
                 Por apenas
               </p>
 
-              <span className="text-4xl font-extrabold tracking-tight text-[#0F172A] md:text-5xl">
+              <span className="text-3xl font-extrabold tracking-tight text-[#0F172A] md:text-5xl">
                 {formatCurrency(produto.produtoValor)}
               </span>
 
@@ -225,7 +225,7 @@ export default function ProductPage() {
           </div>
         </div>
 
-        <div className="mt-16 rounded-3xl border border-[#E2E8F0] bg-white p-7 shadow-sm md:p-10">
+        <div className="mt-16 rounded-3xl border border-[#E2E8F0] bg-white p-5 shadow-sm md:p-10">
           <h2 className="text-xl font-bold text-[#0F172A]">
             Descrição do produto
           </h2>

@@ -36,38 +36,38 @@ export function HomeSection() {
   }, []);
 
   return (
-    <section className="pt-32  bg-white">
-      <div className="max-w-[1340px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex flex-col  gap-6">
-            <p className="font-mono text-xs mb-4 uppercase tracking-[0.2em] text-[#73839A]">
+    <section className="bg-white pt-16 md:pt-32">
+      <div className="mx-auto max-w-[1340px] px-4 md:px-6">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div className="flex flex-col gap-6">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#73839A] md:mb-4 md:text-xs">
               Edição 2026 — Curadoria tech
             </p>
 
-            <h1 className="font-inter font-bold text-5xl  md:text-7xl  text-black">
+            <h1 className="font-inter text-4xl font-bold leading-tight text-black sm:text-5xl md:text-7xl">
               Tecnologia <br /> que{" "}
               <span className="text-[#3567F4]">vale a pena.</span>
             </h1>
-            <p className="text-lg font-inter max-w-sm  text-[#73839A]">
+            <p className="max-w-sm text-base font-inter text-[#73839A] md:text-lg">
               Setup, produtividade e entretenimento. Selecionamos o que importa
               — sem enrolação, pelo preço justo.
             </p>
-            <div className="flex mt-2 gap-2 items-center flex-col md:flex-row">
+            <div className="mt-2 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center">
               <Link
                 href="/produtos"
-                className="flex gap-2 mb-2 text-white w-fit group font-bold font-inter items-center rounded-full py-3 cursor-pointer px-8 bg-[#0E1629] hover:bg-gradient-to-r from-[#3567F4] to-[#3567F4] transition ease duration-300 "
+                className="group flex w-full items-center justify-center gap-2 rounded-full bg-[#0E1629] px-6 py-3 font-inter text-sm font-bold text-white transition duration-300 hover:bg-gradient-to-r hover:from-[#3567F4] hover:to-[#3567F4] sm:w-fit"
               >
                 Ver produtos
                 <ArrowUpRight
                   size={17}
-                  className="transition-all ease duration-200 group-hover:-translate-y-1 group-hover:translate-1"
+                  className="transition-all duration-200 group-hover:-translate-y-1 group-hover:translate-x-1"
                 />
               </Link>
 
               {usuario ? (
                 <Link
                   href="/perfil"
-                  className="group mb-2 flex w-fit items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-6 py-3 font-inter text-sm font-bold text-[#6B7C94] shadow-sm transition-all duration-300 hover:border-[#0E1629] hover:bg-[#0E1629] hover:text-white hover:shadow-md"
+                  className="group flex w-full items-center justify-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-6 py-3 font-inter text-sm font-bold text-[#6B7C94] shadow-sm transition-all duration-300 hover:border-[#0E1629] hover:bg-[#0E1629] hover:text-white hover:shadow-md sm:w-fit"
                 >
                   Ver perfil
                   <User2Icon
@@ -78,7 +78,7 @@ export function HomeSection() {
               ) : (
                 <Link
                   href="/register"
-                  className="group mb-2 flex w-fit items-center gap-2 rounded-full bg-[#0E1629] px-6 py-3 font-inter text-sm font-bold text-white shadow-sm transition-all duration-300 hover:bg-[#1A2742] hover:shadow-md"
+                  className="group flex w-full items-center justify-center gap-2 rounded-full bg-[#0E1629] px-6 py-3 font-inter text-sm font-bold text-white shadow-sm transition-all duration-300 hover:bg-[#1A2742] hover:shadow-md sm:w-fit"
                 >
                   Criar conta
                   <User2Icon
@@ -88,17 +88,17 @@ export function HomeSection() {
                 </Link>
               )}
             </div>
-            <div className="flex gap-4 mt-4 items-center">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A]">
+            <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-4">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#73839A] sm:text-xs">
                 +20 produtos
               </p>
 
-              <div className="w-px h-3 bg-[#E5E7EB]"></div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A]">
+              <div className="hidden h-3 w-px bg-[#E5E7EB] sm:block" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#73839A] sm:text-xs">
                 8 categorias
               </p>
-              <div className="w-px h-3 bg-[#E5E7EB]"></div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#73839A]">
+              <div className="hidden h-3 w-px bg-[#E5E7EB] sm:block" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#73839A] sm:text-xs">
                 4.8★ avaliação
               </p>
             </div>
@@ -106,34 +106,34 @@ export function HomeSection() {
           <div className="">
             <Link
               href="/produtos"
-              className="group relative block h-full min-h-[340px] overflow-hidden rounded-2xl bg-[#F1F5F9]"
+              className="group relative block h-full min-h-[260px] overflow-hidden rounded-2xl bg-[#F1F5F9] md:min-h-[340px]"
             >
               <Image
                 src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=1200&q=80"
                 alt="Setup tech"
                 fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                sizes="(max-width: 768px) 100vw, 40vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 via-[#0F172A]/10 to-transparent" />
 
-              <div className="absolute left-5 top-5">
-                <span className="rounded-full bg-white/15 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-white backdrop-blur">
+              <div className="absolute left-4 top-4 md:left-5 md:top-5">
+                <span className="rounded-full bg-white/15 px-3 py-1 font-mono text-[9px] uppercase tracking-wider text-white backdrop-blur sm:text-[10px]">
                   Edição 2026
                 </span>
               </div>
 
-              <div className="absolute inset-x-5 bottom-5 flex items-end justify-between">
+              <div className="absolute inset-x-4 bottom-4 flex items-end justify-between md:inset-x-5 md:bottom-5">
                 <div>
-                  <p className="font-mono text-xs uppercase tracking-wider text-white/70">
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-white/70 md:text-xs">
                     Seleção
                   </p>
-                  <p className="mt-1 text-xl font-bold text-white">
+                  <p className="mt-1 text-lg font-bold text-white md:text-xl">
                     Setups que rendem
                   </p>
                 </div>
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0F172A] transition group-hover:bg-[#2D5BFF] group-hover:text-white">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#0F172A] transition group-hover:bg-[#2D5BFF] group-hover:text-white md:h-10 md:w-10">
                   <ArrowUpRight size={18} />
                 </span>
               </div>
@@ -147,7 +147,7 @@ export function HomeSection() {
             {[...ITEMS, ...ITEMS].map((it, i) => (
               <span
                 key={i}
-                className="flex items-center gap-8 font-mono text-xs uppercase tracking-[0.2em] text-white/70"
+                className="flex items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] text-white/70 sm:text-xs"
               >
                 {it}
                 <span className="text-[#2D5BFF]">/</span>
