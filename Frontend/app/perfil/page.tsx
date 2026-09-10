@@ -58,7 +58,7 @@ export default function Perfil() {
             <div className="border-b border-[#E5E7EB] px-4 py-6 md:px-8 md:py-8">
               <div className="flex items-center gap-4 md:gap-5">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#ECEFFD] text-[#4F75F5] md:h-20 md:w-20">
-                  <User2Icon size={30} md:size={34} />
+                  <User2Icon size={30} className="md:h-[34px] md:w-[34px]" />
                 </div>
 
                 <div>

@@ -1,6 +1,10 @@
 "use client";
 
-import { adicionarAoCarrinho, buscarProdutoPorId } from "@/app/Services/api";
+import {
+  adicionarAoCarrinho,
+  adicionarReview,
+  buscarProdutoPorId,
+} from "@/app/Services/api";
 import { Produto } from "@/app/types/produto";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,7 +31,29 @@ export default function ProductPage() {
   const [produto, setProduto] = useState<Produto>();
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
+  const [reviewing, setReviewing] = useState(false);
 
+  async function handleReview(nota: number) {
+    if (!produto?.id || reviewing) return;
+
+    try {
+      setReviewing(true);
+      await adicionarReview(produto.id, nota);
+
+      setProduto((produtoAtual) =>
+        produtoAtual
+          ? { ...produtoAtual, reviewsCount: produtoAtual.reviewsCount + 1 }
+          : produtoAtual,
+      );
+
+      const produtoAtualizado = await buscarProdutoPorId(produto.id);
+      setProduto(produtoAtualizado);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setReviewing(false);
+    }
+  }
   useEffect(() => {
     async function carregarProduto() {
       try {
@@ -170,6 +196,16 @@ export default function ProductPage() {
                 {produto.reviewsCount} avaliações
               </span>
             </div>
+
+            <button
+              type="button"
+              onClick={() => handleReview(5)}
+              disabled={reviewing}
+              className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-[#3567F3] bg-[#EEF4FF] px-4 py-2 text-sm font-semibold text-[#3567F3] transition hover:bg-[#E1EBFF] disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <Star size={16} className="fill-amber-400 text-amber-400" />
+              {reviewing ? "Adicionando review..." : "Adicionar review (+1)"}
+            </button>
 
             <div className="my-7 h-px bg-[#E2E8F0]" />
 

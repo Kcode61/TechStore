@@ -3,6 +3,33 @@ import { CarrinhoItem } from "../types/carrinhoitem";
 import { ProdutoCategoria } from "../types/produto";
 import { User } from "../types/user";
 
+export async function adicionarReview(
+  produtoId: number,
+  nota: number,
+): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Usuário não autenticado");
+  }
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/catalogo/${produtoId}/review?nota=${nota}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Erro ao adicionar review");
+  }
+}
+
+
 export async function listarProdutos() {
   const token = localStorage.getItem("token");
 
