@@ -21,6 +21,26 @@ public class ProductService {
         return produtoRepository.findAll();
     }
 
+    public void adicionarReview(double novaNota, int id) {
+        Optional<Produto> produtoBuscado = produtoRepository.findById(id);
+
+        if (produtoBuscado.isEmpty()) {
+            throw new RuntimeException("Produto não encontrado");
+        }
+
+        Produto produto = produtoBuscado.get();
+
+        double mediaAtual = produto.getProdutoReview();
+        int quantidadeAtual = produto.getReviewsCount();
+
+        double novaMedia = ((mediaAtual * quantidadeAtual) + novaNota) / (quantidadeAtual + 1);
+
+        produto.setProdutoReview(novaMedia);
+        produto.setReviewsCount(quantidadeAtual + 1);
+
+        produtoRepository.save(produto);
+    }
+
     public void removerProdutoDoCatalogo(int id) {
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
         if (produtoBuscado.isEmpty()) {

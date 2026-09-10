@@ -28,6 +28,13 @@ public class ProductController {
         return ResponseEntity.ok("Produto removido com sucesso");
     }
 
+    @PostMapping("/{id}/review")
+    public ResponseEntity<Void> adicionarReview(@PathVariable int id, @RequestParam double nota) {
+        productService.adicionarReview(nota, id);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<Produto>> listarProdutos() {
         return ResponseEntity.ok(productService.listarProdutosDoCatalogo());
