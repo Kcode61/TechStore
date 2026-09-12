@@ -10,27 +10,27 @@ import kauan.projetcts.TechStore.Domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.util.Date;
+
 @Service
 public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
     public String generateToken(User user) {
+        Instant validade = Instant.now().plus(Duration.ofHours(2));
         Algorithm algorithm = Algorithm.HMAC256(secret);
-        return JWT.create()
-                .withIssuer("auth-admin")
-                .withSubject(user.getEmail())
-                .sign(algorithm);
+        return JWT.create().withIssuer("auth-admin").withSubject(user.getEmail()).withExpiresAt(validade).sign(algorithm);
     }
 
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            JWTVerifier verifier =
-                    JWT.require(algorithm)
-                            .withIssuer("auth-admin")
-                            .build();
+            JWTVerifier verifier = JWT.require(algorithm).withIssuer("auth-admin").build();
 
             var auth = verifier.verify(token);
             return auth.getSubject();
@@ -40,4 +40,5 @@ public class TokenService {
     }
 
     ;
+
 }

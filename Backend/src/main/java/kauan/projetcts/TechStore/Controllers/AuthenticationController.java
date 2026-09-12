@@ -2,10 +2,7 @@ package kauan.projetcts.TechStore.Controllers;
 
 import jakarta.validation.Valid;
 
-import kauan.projetcts.TechStore.Domain.AuthenticationDTO;
-import kauan.projetcts.TechStore.Domain.RegisterDTO;
-import kauan.projetcts.TechStore.Domain.User;
-import kauan.projetcts.TechStore.Domain.UserRepository;
+import kauan.projetcts.TechStore.Domain.*;
 import kauan.projetcts.TechStore.Security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import kauan.projetcts.TechStore.Domain.Carrinho;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
@@ -53,14 +50,13 @@ public class AuthenticationController {
         return ResponseEntity.badRequest().build();
     }
 
-    String encryptedPassword = passwordEncoder.encode(data.password());
-
-    User newUser = new User(
-            data.email(),
-            encryptedPassword,
-            data.role(),
-            data.name()
-    );
+     String encryptedPassword = passwordEncoder.encode(data.password());
+       User newUser = new User(
+               data.email(),
+               encryptedPassword,
+               Cargo.USER,
+               data.name()
+       );
 
     Carrinho carrinho = new Carrinho();
 
