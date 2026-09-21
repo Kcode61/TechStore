@@ -22,6 +22,11 @@ public class ProductService {
     }
 
     public void adicionarReview(double novaNota, int id) {
+        if (Double.isNaN(novaNota) || Double.isInfinite(novaNota)
+                || novaNota < 0 || novaNota > 5) {
+            throw new IllegalArgumentException("Nota deve estar entre 0 e 5");
+        }
+
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
 
         if (produtoBuscado.isEmpty()) {

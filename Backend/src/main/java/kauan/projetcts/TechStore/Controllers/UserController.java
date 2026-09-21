@@ -2,6 +2,7 @@ package kauan.projetcts.TechStore.Controllers;
 
 import kauan.projetcts.TechStore.Domain.Produto;
 import kauan.projetcts.TechStore.Domain.User;
+import kauan.projetcts.TechStore.Domain.UserResponseDTO;
 import kauan.projetcts.TechStore.Services.ProductService;
 import kauan.projetcts.TechStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/me")
-    public User buscarUsuarioLogado(Authentication authentication) {
-        return userService.GetUsuarioLogado(authentication);
+    public UserResponseDTO buscarUsuarioLogado(Authentication authentication) {
+        return new UserResponseDTO(userService.GetUsuarioLogado(authentication));
 
     }
 

@@ -38,8 +38,8 @@ public class AuthenticationController {
 
             return ResponseEntity.ok(token);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            return ResponseEntity.status(401).build();
+          
         }
     }
 

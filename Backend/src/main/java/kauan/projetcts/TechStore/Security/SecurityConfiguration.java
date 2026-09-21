@@ -23,11 +23,19 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import kauan.projetcts.TechStore.Domain.Carrinho;
 import java.util.List;
-
+import org.springframework.beans.factory.annotation.Value;
 @Configuration
 @EnableWebSecurity
 
 public class SecurityConfiguration {
+    @Value("${ADMIN_EMAIL}")
+    private String adminEmail;
+
+    @Value("${ADMIN_PASSWORD}")
+    private String adminPassword;
+
+    @Value("${ADMIN_NAME}")
+    private String adminName;
     @Autowired
     SecurityFilter securityFilter;
 
@@ -39,8 +47,8 @@ public class SecurityConfiguration {
     "http://localhost:3000",
     "https://tech-store-three-virid.vercel.app"
 ));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET","PATCH", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
@@ -85,19 +93,15 @@ public class SecurityConfiguration {
     CommandLineRunner init(UserRepository userRepository, PasswordEncoder encoder) {
 
     return args -> {
+User user = userRepository.findByEmail(adminEmail);
 
-        User user = userRepository.findByEmail("admin@email.com");
-
-        if (user == null) {
-
-            user = new User();
-
-            user.setNome("Admin");
-            user.setEmail("admin@email.com");
-            user.setPassword(encoder.encode("123456"));
-            user.setCargo(Cargo.ADMIN);
-
-        }
+if (user == null) {
+    user = new User();
+    user.setNome(adminName);
+    user.setEmail(adminEmail);
+    user.setPassword(encoder.encode(adminPassword));
+    user.setCargo(Cargo.ADMIN);
+}
 
         if (user.getCarrinho() == null) {
 
