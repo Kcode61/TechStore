@@ -2,6 +2,7 @@ package kauan.projetcts.TechStore.Services;
 
 import kauan.projetcts.TechStore.Domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -16,12 +17,15 @@ public class ProductService {
     CarrinhoItemRepository carrinhoItemRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
 
     public List<Produto> listarProdutosDoCatalogo() {
         return produtoRepository.findAll();
     }
 
-    public void adicionarReview(double novaNota, int id) {
+    @Transactional
+    public void adicionarReview(double novaNota, int id, User user) {
         if (Double.isNaN(novaNota) || Double.isInfinite(novaNota)
                 || novaNota < 0 || novaNota > 5) {
             throw new IllegalArgumentException("Nota deve estar entre 0 e 5");
@@ -35,6 +39,10 @@ public class ProductService {
 
         Produto produto = produtoBuscado.get();
 
+        if (reviewRepository.existsByUserIdAndProdutoId(user.getId(), produto.getId())) {
+            throw new IllegalArgumentException("Usuário já avaliou este produto");
+        }
+
         double mediaAtual = produto.getProdutoReview();
         int quantidadeAtual = produto.getReviewsCount();
 
@@ -44,8 +52,15 @@ public class ProductService {
         produto.setReviewsCount(quantidadeAtual + 1);
 
         produtoRepository.save(produto);
+
+        Review review = new Review();
+        review.setNota(novaNota);
+        review.setUser(user);
+        review.setProduto(produto);
+        reviewRepository.save(review);
     }
 
+    @Transactional
     public void removerProdutoDoCatalogo(int id) {
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
         if (produtoBuscado.isEmpty()) {
@@ -66,6 +81,7 @@ public class ProductService {
             }
         }
 
+        reviewRepository.deleteByProdutoId(id);
         produtoRepository.deleteById(id);
     }
 

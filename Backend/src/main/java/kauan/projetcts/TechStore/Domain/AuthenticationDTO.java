@@ -1,4 +1,5 @@
 package kauan.projetcts.TechStore.Domain;
-
-public record AuthenticationDTO(String password, String email) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+public record AuthenticationDTO(String password, @Email @NotBlank String email) {
 }

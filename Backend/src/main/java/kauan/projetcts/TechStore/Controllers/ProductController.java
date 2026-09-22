@@ -3,7 +3,9 @@ package kauan.projetcts.TechStore.Controllers;
 import kauan.projetcts.TechStore.Domain.NovoProdutoDTO;
 import kauan.projetcts.TechStore.Domain.NovoProdutoNoCatalogoDTO;
 import kauan.projetcts.TechStore.Domain.Produto;
+import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Services.ProductService;
+import kauan.projetcts.TechStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private UserService userService;
 
     @PatchMapping("/{id}")
     public ResponseEntity<Produto> atualizarProduto(@PathVariable int id, @RequestBody NovoProdutoDTO novoProdutoDTO) {
@@ -29,8 +33,11 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/review")
-    public ResponseEntity<Void> adicionarReview(@PathVariable int id, @RequestParam double nota) {
-        productService.adicionarReview(nota, id);
+    public ResponseEntity<Void> adicionarReview(Authentication authentication,
+                                                @PathVariable int id,
+                                                @RequestParam double nota) {
+        User user = userService.GetUsuarioLogado(authentication);
+        productService.adicionarReview(nota, id, user);
 
         return ResponseEntity.ok().build();
     }
