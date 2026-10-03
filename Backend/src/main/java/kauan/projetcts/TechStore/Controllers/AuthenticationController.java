@@ -1,5 +1,6 @@
 package kauan.projetcts.TechStore.Controllers;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;
 
 import kauan.projetcts.TechStore.Domain.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+
 public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     @Autowired
@@ -30,6 +32,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @RateLimiter(name = "login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         try {
             var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.email(), data.password()));
@@ -44,7 +47,8 @@ public class AuthenticationController {
     }
 
    @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
+   @RateLimiter(name = "register")
+   public ResponseEntity register(@RequestBody @Valid RegisterDTO data) {
 
     if (this.userRepository.findByEmail(data.email()) != null) {
         return ResponseEntity.badRequest().build();

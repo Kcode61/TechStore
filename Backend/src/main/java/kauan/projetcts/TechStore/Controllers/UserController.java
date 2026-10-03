@@ -1,5 +1,6 @@
 package kauan.projetcts.TechStore.Controllers;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import kauan.projetcts.TechStore.Domain.Produto;
 import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Domain.UserResponseDTO;
@@ -14,16 +15,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@RateLimiter(name = "apiusers" )
 public class UserController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/me")
+
     public UserResponseDTO buscarUsuarioLogado(Authentication authentication) {
         return new UserResponseDTO(userService.GetUsuarioLogado(authentication));
 
     }
-
     @DeleteMapping("/me")
     public void deletarUsuario(Authentication authentication) {
         User user = userService.GetUsuarioLogado(authentication);

@@ -1,5 +1,6 @@
 package kauan.projetcts.TechStore.Controllers;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import kauan.projetcts.TechStore.Domain.Carrinho;
 import kauan.projetcts.TechStore.Domain.CarrinhoItem;
 import kauan.projetcts.TechStore.Domain.CarrinhoResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/carrinho")
+@RateLimiter(name = "apicarrinho")
 public class CarrinhoController {
     @Autowired
     private CarrinhoService carrinhoService;

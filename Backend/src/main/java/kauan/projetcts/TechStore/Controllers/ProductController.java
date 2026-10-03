@@ -1,5 +1,6 @@
 package kauan.projetcts.TechStore.Controllers;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import kauan.projetcts.TechStore.Domain.NovoProdutoDTO;
 import kauan.projetcts.TechStore.Domain.NovoProdutoNoCatalogoDTO;
 import kauan.projetcts.TechStore.Domain.Produto;
@@ -8,12 +9,15 @@ import kauan.projetcts.TechStore.Services.ProductService;
 import kauan.projetcts.TechStore.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/catalogo")
+@RateLimiter(name = "apiproducts")
+
 public class ProductController {
     @Autowired
     private ProductService productService;
