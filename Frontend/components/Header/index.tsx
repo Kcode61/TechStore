@@ -6,11 +6,14 @@ import {
   ArrowUpRight,
   LogOut,
   Menu,
+  Moon,
   ShieldAlert,
   ShoppingCartIcon,
+  Sun,
   User2Icon,
   X,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { usePathname } from "next/dist/client/components/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -18,7 +21,14 @@ import { useEffect, useState } from "react";
 export function Header() {
   const [usuario, setUsuario] = useState<User | null>(null);
   const [menuAberto, setMenuAberto] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const temaEscuro = mounted && theme === "dark";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function carregarUsuario() {
@@ -43,7 +53,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E5E7EB] bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-[#E5E7EB]  bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-3 px-4 py-4 md:px-6">
         <div className="flex min-w-0 items-center gap-3 md:gap-12">
           <Link href="/" className="flex items-center gap-3 group">
@@ -114,16 +124,36 @@ export function Header() {
               />
             </Link>
           )}
+          <button
+            type="button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
+            title={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-all duration-300 hover:border-[#3567F4] hover:bg-[#EEF3FF] hover:text-[#3567F4]"
+          >
+            {temaEscuro ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
 
-        <button
-          type="button"
-          aria-label="Abrir menu"
-          onClick={() => setMenuAberto((valor) => !valor)}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] md:hidden"
-        >
-          {menuAberto ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            aria-label={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
+            title={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-colors hover:border-[#3567F4] hover:text-[#3567F4]"
+          >
+            {temaEscuro ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button
+            type="button"
+            aria-label={menuAberto ? "Fechar menu" : "Abrir menu"}
+            onClick={() => setMenuAberto((valor) => !valor)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A]"
+          >
+            {menuAberto ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </div>
 
       {menuAberto && (
