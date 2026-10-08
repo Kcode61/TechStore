@@ -33,7 +33,29 @@ html.dark [class~="bg-[#F1F5F9]"],
 html.dark [class~="bg-[#F5F6FA]"] {
   background-color: #111318;
 }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
 
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: reveal 700ms ease-in-out;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+@keyframes reveal {
+  from {
+    clip-path: circle(0% at 100% 0%);
+  }
+
+  to {
+    clip-path: circle(150% at 100% 0%);
+  }
+}
 html.dark [class~="bg-white"],
 html.dark [class~="bg-white/90"],
 html.dark [class~="bg-[#F8F9FB]"],

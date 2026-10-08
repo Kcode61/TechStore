@@ -17,6 +17,7 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/dist/client/components/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 
 export function Header() {
   const [usuario, setUsuario] = useState<User | null>(null);
@@ -51,7 +52,22 @@ export function Header() {
     localStorage.removeItem("token");
     window.location.href = "/login";
   }
+  async function toggleTheme() {
+    const nextTheme = theme === "dark" ? "light" : "dark";
 
+    if (!document.startViewTransition) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    const transition = document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(nextTheme);
+      });
+    });
+
+    await transition.ready;
+  }
   return (
     <header className="sticky top-0 z-50 border-b border-[#E5E7EB]  bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1340px] items-center justify-between gap-3 px-4 py-4 md:px-6">
@@ -126,7 +142,7 @@ export function Header() {
           )}
           <button
             type="button"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={toggleTheme}
             aria-label={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
             title={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-all duration-300 hover:border-[#3567F4] hover:bg-[#EEF3FF] hover:text-[#3567F4]"
@@ -138,7 +154,7 @@ export function Header() {
         <div className="flex items-center gap-2 md:hidden">
           <button
             type="button"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={toggleTheme}
             aria-label={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
             title={temaEscuro ? "Ativar modo claro" : "Ativar modo escuro"}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] bg-white text-[#0F172A] transition-colors hover:border-[#3567F4] hover:text-[#3567F4]"
