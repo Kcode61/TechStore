@@ -15,8 +15,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Seu site",
-  description: "Seu site",
+  title: "Tech Store - Versão Nova",
+  description:
+    "A Tech Store mais completa do Brasil, com os melhores produtos e preços.",
 };
 
 export default function RootLayout({
