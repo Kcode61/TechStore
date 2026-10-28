@@ -1,6 +1,8 @@
 package kauan.projetcts.TechStore.Services;
 
 import kauan.projetcts.TechStore.Domain.*;
+import kauan.projetcts.TechStore.Exceptions.ProductAlreadyReviewedException;
+import kauan.projetcts.TechStore.Exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -34,13 +36,15 @@ public class ProductService {
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
 
         if (produtoBuscado.isEmpty()) {
-            throw new RuntimeException("Produto não encontrado");
+            throw  new ProductNotFoundException(
+                    "Produto não encontrado: " + id
+            );
         }
 
         Produto produto = produtoBuscado.get();
 
         if (reviewRepository.existsByUserIdAndProdutoId(user.getId(), produto.getId())) {
-            throw new IllegalArgumentException("Usuário já avaliou este produto");
+            throw new ProductAlreadyReviewedException("Usuário já avaliou este produto");
         }
 
         double mediaAtual = produto.getProdutoReview();
@@ -64,9 +68,10 @@ public class ProductService {
     public void removerProdutoDoCatalogo(int id) {
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
         if (produtoBuscado.isEmpty()) {
-            throw new RuntimeException("Produto não encontrado");
+            throw  new ProductNotFoundException(
+                    "Produto não encontrado: " + id
+            );
         }
-
         var itens = carrinhoItemRepository.findByProduto_Id(id);
         for (CarrinhoItem item : itens) {
             Carrinho carrinho = item.getCarrinho();
@@ -88,7 +93,9 @@ public class ProductService {
     public Produto buscarProdutoPorId(int id) {
         Optional<Produto> produtoBuscado = produtoRepository.findById(id);
         if (produtoBuscado.isEmpty()) {
-            throw new RuntimeException("Produto não encontrado");
+            throw  new ProductNotFoundException(
+                    "Produto não encontrado: " + id
+            );
         }
         return produtoBuscado.get();
     }
