@@ -2,6 +2,8 @@ package kauan.projetcts.TechStore.Services;
 
 import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Domain.UserRepository;
+import kauan.projetcts.TechStore.Exceptions.ProductNotFoundException;
+import kauan.projetcts.TechStore.Exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,13 @@ public class UserService {
 
     public User GetUsuarioLogado(Authentication authentication) {
         String email = authentication.getName();
+        if (email.isEmpty()) {
+            throw  new UserNotFoundException(
+                    "Usuário não encontrado"
+            );
+        }
         return userRepository.findByEmail(email);
+
     }
 
     public User SalvarUser(User user) {

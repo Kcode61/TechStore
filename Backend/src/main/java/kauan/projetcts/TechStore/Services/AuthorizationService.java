@@ -1,8 +1,10 @@
 package kauan.projetcts.TechStore.Services;
 
 
+import org.jspecify.annotations.NonNull;
 import kauan.projetcts.TechStore.Domain.User;
 import kauan.projetcts.TechStore.Domain.UserRepository;
+import kauan.projetcts.TechStore.Exceptions.UserNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +19,7 @@ public class AuthorizationService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
 
         User user = userRepository.findByEmail(email);
 
